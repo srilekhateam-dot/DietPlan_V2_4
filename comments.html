@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriPlan — Comments & Queries</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Fraunces:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --teal: #1a9e8f;
+    --teal-light: #e6f7f5;
+    --teal-dark: #14786c;
+    --bg: #f5f6f8;
+    --white: #ffffff;
+    --text: #1c2230;
+    --muted: #6b7280;
+    --border: #e2e5ea;
+    --card-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── SHARED NAVBAR — NutriPlan consistent style ── */
+  #topnav {
+    position: sticky;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    height: 60px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    box-shadow: 0 1px 12px rgba(0,0,0,0.06);
+  }
+  .nav-brand {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    color: var(--teal);
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    text-decoration: none;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .nav-brand span { color: var(--text); font-weight: 300; font-style: italic; }
+  .nav-center {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .nav-link {
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 7px 16px;
+    border-radius: 20px;
+    position: relative;
+    transition: color 0.2s, background 0.2s;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+  }
+  .nav-link:hover { color: var(--teal-dark); background: rgba(26,158,143,0.10); }
+  .nav-link.active { color: #ffffff; font-weight: 800; background: var(--teal); box-shadow: 0 4px 14px rgba(26,158,143,0.28); }
+  .nav-link-auth { display: none; }
+  .nav-link-auth.visible { display: flex; }
+  .nav-msg-dot {
+    position: absolute;
+    top: 4px; right: 5px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #dc2626;
+    border: 2px solid #fff;
+    display: none;
+  }
+  .nav-msg-dot.show { display: block; }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+  .nav-signin-btn {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    background: var(--teal);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+    text-decoration: none;
+  }
+  .nav-signin-btn:hover { background: var(--teal-dark); }
+  .nav-signin-btn.show { display: flex; }
+  .nav-profile-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: #fff;
+    font-family: 'Fraunces', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid var(--teal-light);
+    flex-shrink: 0;
+    transition: background 0.2s, transform 0.15s;
+    position: relative;
+  }
+  .nav-profile-btn:hover { background: var(--teal-dark); transform: scale(1.05); }
+  .nav-profile-btn.show { display: flex; }
+  #avatar-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+    min-width: 200px;
+    z-index: 300;
+    overflow: hidden;
+    animation: navDropIn 0.18s ease;
+  }
+  #avatar-dropdown.open { display: block; }
+  @keyframes navDropIn { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+  .avatar-dd-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.15s;
+    border: none;
+    background: none;
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .avatar-dd-item:hover { background: var(--teal-light); color: var(--teal); }
+  .avatar-dd-item.danger:hover { background: #fef2f2; color: #dc2626; }
+  .avatar-dd-sep { height: 1px; background: var(--border); margin: 4px 0; }
+  .avatar-dd-icon { font-size: 1.1rem; }
+  @media (max-width: 700px) {
+    #topnav { padding: 0 12px; }
+    .nav-center { position: static; transform: none; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; flex: 1; margin: 0 8px; justify-content: flex-start; }
+    .nav-center::-webkit-scrollbar { display: none; }
+    .nav-link { font-size: 12.5px; padding: 6px 11px; }
+    .nav-brand { font-size: 1.1rem; }
+  }
+  @media (max-width: 480px) { .nav-link { font-size: 12px; padding: 5px 9px; } }
+
+  /* PAGE HERO */
+  .page-hero {
+    background: linear-gradient(160deg, #f0faf9 0%, #f5f6f8 60%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 24px 36px;
+    text-align: center;
+  }
+  .page-hero .badge {
+    display: inline-block;
+    background: var(--teal-light); color: var(--teal-dark);
+    font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 20px; margin-bottom: 14px;
+  }
+  .page-hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 600; line-height: 1.2; color: var(--text); margin-bottom: 10px;
+  }
+  .page-hero h1 em { color: var(--teal); font-style: italic; }
+  .page-hero p { color: var(--muted); max-width: 500px; margin: 0 auto; font-size: 14.5px; }
+
+  /* LAYOUT */
+  .page-wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+    padding: 36px;
+    margin-bottom: 28px;
+    border: 1px solid var(--border);
+    animation: fadeUp 0.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .section-sub {
+    font-size: 13.5px; color: var(--muted); margin-bottom: 28px;
+  }
+
+  /* FORM */
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+  .form-group label { font-size: 12.5px; font-weight: 600; color: var(--text); }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 11px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(26,158,143,0.12);
+    background: var(--white);
+  }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* CATEGORY CHIPS */
+  .category-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .cat-chip {
+    padding: 7px 16px;
+    border-radius: 50px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    font-size: 13px; font-weight: 500; color: var(--text);
+    cursor: pointer; transition: all 0.2s; user-select: none;
+  }
+  .cat-chip:hover { border-color: var(--teal); color: var(--teal); }
+  .cat-chip.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+
+  /* SUBMIT BUTTON */
+  .btn-primary {
+    background: var(--teal);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 13px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .btn-primary:hover { background: var(--teal-dark); transform: translateY(-1px); }
+  .btn-primary:disabled {
+    background: var(--border); color: var(--muted); cursor: not-allowed; transform: none;
+  }
+
+  /* ERROR */
+  .error-msg { font-size: 11.5px; color: #e74c3c; margin-top: 3px; display: none; }
+  .form-group.has-error input,
+  .form-group.has-error textarea { border-color: #e74c3c; }
+  .form-group.has-error .error-msg { display: block; }
+
+  /* CHARACTER COUNTER */
+  .char-counter {
+    font-size: 11.5px; color: var(--muted); text-align: right; margin-top: 4px;
+  }
+
+  /* SUCCESS */
+  .success-card {
+    text-align: center;
+    padding: 48px 32px;
+    display: none;
+  }
+  .success-card.show { display: block; }
+  .success-icon { font-size: 3rem; margin-bottom: 16px; }
+  .success-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem; font-weight: 600; color: var(--text); margin-bottom: 8px;
+  }
+  .success-sub { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+
+  /* COMMENTS LIST */
+  .comments-list { margin-top: 40px; }
+  .comments-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .comments-header h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem; font-weight: 600; color: var(--text);
+  }
+  .comment-count {
+    background: var(--teal-light); color: var(--teal-dark);
+    font-size: 12px; font-weight: 700;
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .comment-item {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    margin-bottom: 14px;
+    animation: fadeUp 0.3s ease both;
+  }
+  .comment-meta {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+  }
+  .comment-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--teal); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; flex-shrink: 0;
+  }
+  .comment-name { font-weight: 600; font-size: 14px; color: var(--text); }
+  .comment-time { font-size: 11.5px; color: var(--muted); }
+  .comment-category {
+    display: inline-block;
+    background: var(--teal-light); color: var(--teal-dark);
+    font-size: 11px; font-weight: 700;
+    padding: 2px 9px; border-radius: 20px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .comment-text { font-size: 13.5px; color: #374151; line-height: 1.6; }
+
+  /* DIVIDER */
+  .section-divider { height: 1px; background: var(--border); margin: 32px 0; }
+
+  /* LOADING */
+  .loading-comments {
+    text-align: center; padding: 32px; color: var(--muted); font-size: 13.5px;
+  }
+
+
+  /* RESPONSIVE */
+  @media(max-width:600px){
+    .card { padding: 22px 16px; }
+    .form-row { grid-template-columns: 1fr; }
+    .page-wrap { padding: 28px 16px 60px; }
+  }
+</style>
+
+<script>
+// ── Instant nav auth: read cached state before first paint ──
+(function(){
+  var cached = localStorage.getItem('np_auth');
+  var style = document.createElement('style');
+  if (cached === 'signed-in') {
+    style.textContent = '#nav-signin-btn{display:none!important}#nav-profile-btn{display:flex!important}.nav-link-auth{display:flex!important}';
+  } else {
+    style.textContent = '#nav-profile-btn{display:none!important}#nav-signin-btn{display:flex!important}.nav-link-auth{display:none!important}';
+  }
+  document.head.appendChild(style);
+})();
+</script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="topnav">
+  <a class="nav-brand" href="index.html">Nutri<span>Plan</span></a>
+  <!-- CENTER nav -->
+  <div class="nav-center" id="nav-center">
+    <a class="nav-link" href="index.html">Welcome</a>
+    <a class="nav-link" href="javascript:void(0)" onclick="smoothNavigate('index.html?step=education')">Education</a>
+    <a class="nav-link" href="javascript:void(0)" onclick="smoothNavigate('index.html?step=assessment')">Assessment</a>
+    <a class="nav-link nav-link-auth" href="dietplan.html">Dietplan</a>
+    <a class="nav-link nav-link-auth active" href="comments.html">Comments</a>
+    <a class="nav-link nav-link-auth " href="messages.html" style="position:relative;">Messages<span class="nav-msg-dot" id="nav-msg-dot"></span></a>
+    
+  </div>
+  <div class="nav-right">
+    <a href="profile.html" class="nav-signin-btn" id="nav-signin-btn">Sign In</a>
+    <div style="position:relative;flex-shrink:0;" id="nav-profile-wrap">
+      <button class="nav-profile-btn" id="nav-profile-btn" onclick="toggleNavDropdown()" title="My Account"></button>
+      <div id="avatar-dropdown">
+        <a href="profile.html" class="avatar-dd-item"><span class="avatar-dd-icon">📋</span> Profiles</a>
+        <div class="avatar-dd-sep"></div>
+        <button class="avatar-dd-item danger" onclick="doNavSignOut()"><span class="avatar-dd-icon">🚪</span> Sign Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="badge">Community</div>
+  <h1>Questions & <em>Queries</em></h1>
+  <p>Have a question about nutrition, your diet plan, or health? Leave it here and we'll get back to you.</p>
+</div>
+
+<div class="page-wrap">
+
+  <!-- SUBMIT FORM CARD -->
+  <div class="card" id="form-card">
+    <div class="section-title">Ask a Question</div>
+    <div class="section-sub">Fill in your details and write your query below. We'll respond as soon as possible.</div>
+
+    <div class="form-row">
+      <div class="form-group" id="fg-name">
+        <label>Your Name</label>
+        <input type="text" id="inp-name" placeholder="e.g. Priya Sharma" maxlength="60"/>
+        <span class="error-msg">Please enter your name</span>
+      </div>
+      <div class="form-group">
+        <label>Phone / Email</label>
+        <input type="text" id="inp-contact" placeholder="Phone or email address" maxlength="100"/>
+      </div>
+    </div>
+
+  
+
+    <div class="form-group" style="margin-top:16px;" id="fg-query">
+      <label>Your Question / Query</label>
+      <textarea id="inp-query" placeholder="Write your question, feedback, or anything you'd like to know about nutrition or your diet plan..." maxlength="600" oninput="updateCounter()"></textarea>
+      <div class="char-counter"><span id="char-count">0</span> / 600</div>
+      <span class="error-msg">Please write your question (min 10 characters)</span>
+    </div>
+
+    <button class="btn-primary" id="submit-btn" onclick="submitComment()">Submit Query</button>
+  </div>
+
+  <!-- SUCCESS CARD -->
+  <div class="card success-card" id="success-card">
+    <div class="success-icon">✅</div>
+    <div class="success-title">Query Submitted!</div>
+    <div class="success-sub">Thank you for reaching out. We'll review your question and get back to you shortly.</div>
+    <button class="btn-primary" style="max-width:240px;margin:0 auto;" onclick="resetForm()">Ask Another Question</button>
+  </div>
+
+  <!-- DIVIDER -->
+  <div class="section-divider"></div>
+
+  <!-- MY PREVIOUS QUERIES -->
+  <div id="my-queries-section" style="display:none;">
+    <div class="comments-header">
+      <h2>My Previous Queries</h2>
+      <span class="comment-count" id="my-query-count">0 queries</span>
+    </div>
+    <div id="my-queries-loading" class="loading-comments">Loading your queries…</div>
+    <div id="my-queries-list"></div>
+  </div>
+
+</div>
+
+<style>
+  /* My queries list */
+  .my-query-item {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    animation: fadeUp 0.3s ease both;
+  }
+  .my-query-meta {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap;
+  }
+  .my-query-category {
+    display: inline-block;
+    background: var(--teal-light); color: var(--teal-dark);
+    font-size: 11px; font-weight: 700;
+    padding: 2px 9px; border-radius: 20px;
+  }
+  .my-query-time { font-size: 11.5px; color: var(--muted); margin-left: auto; }
+  .my-query-text { font-size: 13.5px; color: #374151; line-height: 1.6; margin-bottom: 10px; }
+
+  /* Admin reply bubble under query */
+  .my-query-replies { margin-top: 10px; }
+  .my-query-reply-bubble {
+    background: linear-gradient(135deg, #e6f7f5 0%, #f0fdf9 100%);
+    border: 1.5px solid #a7f3d0;
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .my-query-reply-label {
+    font-size: 10.5px; font-weight: 700; color: var(--teal-dark);
+    text-transform: uppercase; letter-spacing: 0.6px;
+    display: flex; align-items: center; gap: 5px; margin-bottom: 5px;
+  }
+  .my-query-reply-label::before { content: '↩'; font-size: 12px; }
+  .my-query-reply-subj { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .my-query-reply-body { font-size: 13px; color: #374151; line-height: 1.6; }
+  .my-query-reply-time { font-size: 10.5px; color: var(--muted); margin-top: 6px; }
+
+  .no-replies-chip {
+    font-size: 11.5px; color: var(--muted);
+    background: var(--bg); border: 1px dashed var(--border);
+    border-radius: 20px; padding: 4px 12px; display: inline-block;
+  }
+  .login-prompt-box {
+    background: var(--white); border: 1.5px dashed var(--border);
+    border-radius: var(--radius-sm); padding: 24px; text-align: center;
+    color: var(--muted); font-size: 13.5px; margin-top: 8px;
+  }
+  .login-prompt-box a { color: var(--teal); font-weight: 600; text-decoration: none; }
+
+  /* Smooth page entry */
+  body { animation: pageIn 0.3s ease both; transition: opacity 0.18s ease; }
+  @keyframes pageIn { from { opacity:0; } to { opacity:1; } }
+</style>
+
+<script>
+// ── SMOOTH NAV TRANSITION ──────────────────────────────────
+function smoothNavigate(url) {
+  document.body.style.transition = 'opacity 0.18s ease';
+  document.body.style.opacity = '0';
+  setTimeout(() => { window.location.href = url; }, 180);
+}
+
+// ---- GOOGLE SHEETS INTEGRATION ----
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbwwrNauZmqZe6jXml0xr4wYkJY6R17pZDYpXDHNYmIkYIYVR0Vk7HJ5LrQ7yU9kb5i6Xg/exec";
+
+// ---- CATEGORY SELECTION ----
+let selectedCategory = 'General Query';
+function selectCategory(chip) {
+  document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  selectedCategory = chip.textContent.trim();
+}
+
+// ---- CHAR COUNTER ----
+function updateCounter() {
+  const val = document.getElementById('inp-query').value.length;
+  document.getElementById('char-count').textContent = val;
+}
+
+// ---- LOCAL COMMENTS STORE (session) ----
+// In a real deployment this would come from the sheet
+const sessionComments = [];
+
+function timeAgo(dateStr) {
+  const now = new Date();
+  const past = new Date(dateStr);
+  const diff = Math.floor((now - past) / 1000);
+  if(diff < 60) return 'Just now';
+  if(diff < 3600) return `${Math.floor(diff/60)}m ago`;
+  if(diff < 86400) return `${Math.floor(diff/3600)}h ago`;
+  return `${Math.floor(diff/86400)}d ago`;
+}
+
+function getInitials(name) {
+  return name.trim().split(' ').map(w=>w[0]?.toUpperCase()||'').slice(0,2).join('');
+}
+
+function renderComments() {
+  const container = document.getElementById('comments-container');
+  const count = document.getElementById('comment-count');
+
+  // Merge sample + session comments
+  const allComments = [...sampleComments, ...sessionComments].sort((a,b)=>new Date(b.time)-new Date(a.time));
+
+  count.textContent = `${allComments.length} ${allComments.length===1?'query':'queries'}`;
+
+  if(allComments.length === 0) {
+    container.innerHTML = '<div class="loading-comments">No queries yet — be the first to ask!</div>';
+    return;
+  }
+
+  container.innerHTML = allComments.map(c=>`
+    <div class="comment-item">
+      <div class="comment-meta">
+        <div class="comment-avatar">${getInitials(c.name)}</div>
+        <div>
+          <div class="comment-name">${escapeHtml(c.name)}</div>
+          <div class="comment-time">${timeAgo(c.time)}</div>
+        </div>
+        <div class="comment-category">${escapeHtml(c.category)}</div>
+      </div>
+      <div class="comment-text">${escapeHtml(c.query)}</div>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+
+
+// ---- VALIDATION ----
+function validate() {
+  let ok = true;
+  const name = document.getElementById('inp-name').value.trim();
+  const query = document.getElementById('inp-query').value.trim();
+  const fgName = document.getElementById('fg-name');
+  const fgQuery = document.getElementById('fg-query');
+
+  fgName.classList.toggle('has-error', name.length === 0);
+  if(name.length === 0) ok = false;
+
+  fgQuery.classList.toggle('has-error', query.length < 10);
+  if(query.length < 10) ok = false;
+
+  const contact = document.getElementById('inp-contact').value.trim();
+  if (contact) {
+    const isEmail = contact.includes('@');
+    const isPhone = /^[6-9]\d{9}$/.test(contact);
+    if (!isEmail && !isPhone) {
+      alert("Enter a valid phone number (10 digits) or email address");
+      ok = false;
+    }
+  }
+
+  return ok;
+}
+
+// ---- SUBMIT ----
+async function submitComment() {
+  if(!validate()) return;
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  const name = document.getElementById('inp-name').value.trim();
+  const contact = document.getElementById('inp-contact').value.trim();
+  const query = document.getElementById('inp-query').value.trim();
+  const now = new Date().toISOString();
+
+  const payload = {
+    type: 'comment',
+    timestamp: new Date().toLocaleString('en-IN', {timeZone:'Asia/Kolkata'}),
+    name,
+    contact,
+    query
+  };
+
+  // Send to Google Sheet
+//   try {
+//     await fetch(SHEET_URL, {
+//       method: 'POST',
+//       mode: 'no-cors',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify(payload)
+//     });
+//   } catch(e) {
+//     console.warn('Sheet error:', e);
+//   }
+ try {
+  await fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  // ✅ ALWAYS SUCCESS (since no-cors)
+  console.log("Sent (no-cors)");
+
+} catch(e) {
+  console.error('Sheet error:', e);
+  alert("Submission failed.");
+  return;
+}
+
+  // ── Save to Firestore so admin panel can read it ──
+  try {
+    if (window._firestoreDb && window._firestoreAddDoc) {
+      const commentDoc = {
+        name,
+        contact: contact || null,
+        query,
+        category: selectedCategory,
+        timestamp: new Date().toLocaleString('en-IN', {timeZone:'Asia/Kolkata'}),
+        submittedAt: window._firestoreServerTimestamp(),
+        uid: window._currentUser?.uid || null,
+        email: window._currentUser?.email || null,
+        flagged: false
+      };
+      await window._firestoreAddDoc(window._firestoreCollection(window._firestoreDb, "comments"), commentDoc);
+    }
+  } catch(e) {
+    console.warn('Firestore comment save error:', e);
+  }
+  // Add to session list
+  sessionComments.unshift({ name, category: selectedCategory, query, time: now });
+
+  // Show success
+  document.getElementById('form-card').style.display = 'none';
+  const sc = document.getElementById('success-card');
+  sc.classList.add('show');
+  sc.scrollIntoView({behavior:'smooth', block:'center'});
+
+  // Refresh comments list
+  renderComments();
+}
+
+// ---- RESET ----
+function resetForm() {
+  document.getElementById('inp-name').value = '';
+  document.getElementById('inp-contact').value = '';
+  document.getElementById('inp-query').value = '';
+  document.getElementById('char-count').textContent = '0';
+  document.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('active'));
+  document.querySelector('.cat-chip').classList.add('active');
+  selectedCategory = 'General Query';
+  document.getElementById('fg-name').classList.remove('has-error');
+  document.getElementById('fg-query').classList.remove('has-error');
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('submit-btn').textContent = 'Submit Query';
+
+  document.getElementById('success-card').classList.remove('show');
+  document.getElementById('form-card').style.display = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// Initial render
+renderComments();
+</script>
+
+<!-- Shared navbar JS -->
+<script>
+function toggleNavDropdown() {
+  const dd = document.getElementById('avatar-dropdown');
+  if (dd) dd.classList.toggle('open');
+}
+window.toggleNavDropdown = toggleNavDropdown;
+document.addEventListener('click', function(e) {
+  const wrap = document.getElementById('nav-profile-wrap');
+  const dd = document.getElementById('avatar-dropdown');
+  if (wrap && dd && !wrap.contains(e.target)) dd.classList.remove('open');
+});
+function _updateAuthNavLinks(signedIn) {
+  document.querySelectorAll('.nav-link-auth').forEach(el => {
+    el.classList.toggle('visible', signedIn);
+  });
+}
+window._updateAuthNavLinks = _updateAuthNavLinks;
+async function doNavSignOut() {
+  try {
+    const { getAuth, signOut } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+    const _a = getAuth();
+    if (_a) await signOut(_a);
+  } catch(e) {}
+  localStorage.removeItem('np_auth');
+  const pb = document.getElementById('nav-profile-btn');
+  const sb = document.getElementById('nav-signin-btn');
+  const dd = document.getElementById('avatar-dropdown');
+  if (pb) pb.classList.remove('show');
+  if (sb) sb.classList.add('show');
+  if (dd) dd.classList.remove('open');
+  _updateAuthNavLinks(false);
+  window.location.href = 'index.html';
+}
+window.doNavSignOut = doNavSignOut;
+</script>
+
+<!-- Auth state → nav login pill -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc, serverTimestamp, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const _app = initializeApp({
+  apiKey:"AIzaSyC5U_ZtL6ki_LnOS-L6U0jIkWj3vVny1XQ",
+  authDomain:"nutriplan-65582.firebaseapp.com",
+  projectId:"nutriplan-65582",
+  storageBucket:"nutriplan-65582.firebasestorage.app",
+  messagingSenderId:"851509980462",
+  appId:"1:851509980462:web:b18af741addba334ca1ebf"
+});
+const _auth = getAuth(_app);
+const _db = getFirestore(_app);
+
+async function isRestricted(email) {
+  if (!email) return false;
+  try {
+    const snap = await getDoc(doc(_db, "restrictedUsers", email.toLowerCase().replace(/[@.]/g, '_')));
+    return snap.exists();
+  } catch(e) { return false; }
+}
+
+onAuthStateChanged(_auth, async user => {
+  const signinBtn  = document.getElementById('nav-signin-btn');
+  const profileBtn = document.getElementById('nav-profile-btn');
+  if (user) {
+    if (await isRestricted(user.email)) {
+      await signOut(_auth);
+      localStorage.removeItem('np_auth');
+      signinBtn.classList.add('show');
+      profileBtn.classList.remove('show');
+      if (window._updateAuthNavLinks) window._updateAuthNavLinks(false);
+      return;
+    }
+    localStorage.setItem('np_auth', 'signed-in');
+    signinBtn.classList.remove('show');
+    profileBtn.classList.add('show');
+    if (window._updateAuthNavLinks) window._updateAuthNavLinks(true);
+    const initials = (user.displayName || user.email || '?').slice(0,2).toUpperCase();
+    profileBtn.textContent = initials;
+
+    // ── Auto-fill form fields ──
+    try {
+      // Auto-fill contact field with email if signed in
+      const contactField = document.getElementById('inp-contact');
+      if (contactField && !contactField.value) {
+        contactField.value = user.email || '';
+      }
+      // Try to pull name/phone from latest active submission
+      const subsSnap = await getDocs(query(
+        collection(_db, "submissions"),
+        where("accountUid", "==", user.uid)
+      ));
+      if (!subsSnap.empty) {
+        const latest = subsSnap.docs.map(d => d.data()).find(d => !d.deletedByUser && d.name);
+        if (latest) {
+          const nameField = document.getElementById('inp-name');
+          if (nameField && !nameField.value) nameField.value = latest.name;
+        }
+      }
+    } catch(_) {}
+
+    // Store current user for Firestore comment submission
+    window._currentUser = { uid: user.uid, email: user.email, displayName: user.displayName };
+
+    // Load this user's previous queries + admin replies
+    loadMyQueries(user.uid);
+
+    // Check unread messages
+    try {
+      const snap = await getDocs(query(collection(_db, "messages", user.uid, "inbox"), where("read","==",false)));
+      if (!snap.empty) { const d = document.getElementById('nav-msg-dot'); if(d) d.style.display='block'; }
+    } catch(_){}
+  } else {
+    localStorage.removeItem('np_auth');
+    signinBtn.classList.add('show');
+    profileBtn.classList.remove('show');
+    if (window._updateAuthNavLinks) window._updateAuthNavLinks(false);
+    window._currentUser = null;
+
+    // Show login prompt in queries section
+    const section = document.getElementById('my-queries-section');
+    section.style.display = 'block';
+    document.getElementById('my-queries-loading').style.display = 'none';
+    document.getElementById('my-queries-list').innerHTML = `
+      <div class="login-prompt-box">
+        <div style="font-size:1.8rem;margin-bottom:10px;">🔒</div>
+        <div><a href="profile.html">Sign in</a> to view your previous queries and admin replies.</div>
+      </div>`;
+  }
+});
+
+// ── Load current user's queries + admin replies ─────────────
+async function loadMyQueries(uid) {
+  const section = document.getElementById('my-queries-section');
+  const loadingEl = document.getElementById('my-queries-loading');
+  const listEl = document.getElementById('my-queries-list');
+  const countEl = document.getElementById('my-query-count');
+  section.style.display = 'block';
+
+  try {
+    // Fetch this user's comments
+    let myComments = [];
+    try {
+      const snap = await getDocs(query(
+        collection(_db, "comments"),
+        where("uid", "==", uid),
+        orderBy("submittedAt", "desc")
+      ));
+      myComments = snap.docs.map(d => ({ _id: d.id, ...d.data() }));
+    } catch(e) {
+      // fallback without orderBy if index missing
+      const snap = await getDocs(query(collection(_db, "comments"), where("uid", "==", uid)));
+      myComments = snap.docs.map(d => ({ _id: d.id, ...d.data() }));
+      myComments.sort((a,b) => (b.submittedAt?.seconds||0) - (a.submittedAt?.seconds||0));
+    }
+
+    loadingEl.style.display = 'none';
+
+    if (myComments.length === 0) {
+      countEl.textContent = '0 queries';
+      listEl.innerHTML = '<div class="loading-comments" style="padding:20px 0;">You haven\'t submitted any queries yet.</div>';
+      return;
+    }
+
+    // For each comment, fetch its adminReplies sub-collection
+    const renderItems = await Promise.all(myComments.map(async (c) => {
+      let replies = [];
+      try {
+        const rSnap = await getDocs(query(
+          collection(_db, "comments", c._id, "adminReplies"),
+          orderBy("sentAt", "asc")
+        ));
+        replies = rSnap.docs.map(d => ({ _id: d.id, ...d.data() }));
+      } catch(_) {
+        try {
+          const rSnap2 = await getDocs(collection(_db, "comments", c._id, "adminReplies"));
+          replies = rSnap2.docs.map(d => ({ _id: d.id, ...d.data() }));
+        } catch(_) {}
+      }
+      return { ...c, replies };
+    }));
+
+    countEl.textContent = `${renderItems.length} ${renderItems.length === 1 ? 'query' : 'queries'}`;
+
+    listEl.innerHTML = renderItems.map(c => {
+      // Format timestamp
+      let timeStr = '';
+      if (c.submittedAt) {
+        try {
+          const d = c.submittedAt.toDate ? c.submittedAt.toDate() : new Date((c.submittedAt.seconds||0)*1000);
+          timeStr = d.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+        } catch(_) { timeStr = c.timestamp || ''; }
+      } else { timeStr = c.timestamp || ''; }
+
+      const repliesHtml = c.replies.length === 0
+        ? `<div class="my-query-replies"><span class="no-replies-chip">⏳ Awaiting admin reply</span></div>`
+        : `<div class="my-query-replies">${c.replies.map(r => {
+            let rTime = '';
+            if (r.sentAt) {
+              try {
+                const rd = r.sentAt.toDate ? r.sentAt.toDate() : new Date((r.sentAt.seconds||0)*1000);
+                rTime = rd.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+              } catch(_) {}
+            }
+            return `
+              <div class="my-query-reply-bubble">
+                <div class="my-query-reply-label">Admin Reply</div>
+                <div class="my-query-reply-subj">${escapeHtml(r.subject || 'Re: Your query')}</div>
+                <div class="my-query-reply-body">${escapeHtml(r.body || '')}</div>
+                <div class="my-query-reply-time">${rTime}</div>
+              </div>`;
+          }).join('')}</div>`;
+
+      return `
+        <div class="my-query-item">
+          <div class="my-query-meta">
+            <span class="my-query-category">${escapeHtml(c.category || 'General Query')}</span>
+            <span class="my-query-time">${escapeHtml(timeStr)}</span>
+          </div>
+          <div class="my-query-text">${escapeHtml(c.query || '')}</div>
+          ${repliesHtml}
+        </div>`;
+    }).join('');
+
+  } catch(e) {
+    loadingEl.style.display = 'none';
+    listEl.innerHTML = `<div class="loading-comments">Could not load your queries. Please refresh.</div>`;
+    console.warn('loadMyQueries error:', e);
+  }
+}
+
+window._firestoreDb = _db;
+window._firestoreAddDoc = addDoc;
+window._firestoreCollection = collection;
+window._firestoreServerTimestamp = serverTimestamp;
+</script>
+</body>
+</html>

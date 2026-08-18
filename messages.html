@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriPlan — Messages</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Fraunces:ital,wght@0,300;0,600;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --teal:#1a9e8f; --teal-light:#e6f7f5; --teal-dark:#14786c;
+    --bg:#f5f6f8; --white:#ffffff; --text:#1c2230;
+    --muted:#6b7280; --border:#e2e5ea;
+    --card-shadow:0 2px 16px rgba(0,0,0,0.07);
+    --radius:16px; --radius-sm:10px;
+    --red:#dc2626; --red-light:#fef2f2;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;min-height:100vh;padding-top:60px;}
+
+  /* NAV */
+  /* HERO */
+  .page-hero{background:linear-gradient(160deg,#f0faf9 0%,#f5f6f8 70%);border-bottom:1px solid var(--border);padding:36px 24px 28px;text-align:center;}
+  .page-hero h1{font-family:'Fraunces',serif;font-size:clamp(1.5rem,4vw,2rem);font-weight:600;color:var(--text);margin-bottom:6px;}
+  .page-hero h1 em{color:var(--teal);font-style:italic;}
+  .page-hero p{color:var(--muted);font-size:14px;max-width:460px;margin:0 auto;}
+
+  .page-outer{max-width:780px;margin:0 auto;padding:28px 20px 80px;}
+
+  /* Not signed in card */
+  .signin-prompt{background:var(--white);border-radius:var(--radius);box-shadow:var(--card-shadow);border:1px solid var(--border);padding:48px 30px;text-align:center;animation:fadeUp 0.4s ease;}
+  .signin-prompt .icon{font-size:3rem;margin-bottom:14px;}
+  .signin-prompt h2{font-family:'Fraunces',serif;font-size:1.2rem;margin-bottom:8px;}
+  .signin-prompt p{font-size:14px;color:var(--muted);margin-bottom:20px;}
+  .btn-goto{display:inline-block;background:var(--teal);color:#fff;text-decoration:none;padding:11px 28px;border-radius:var(--radius-sm);font-weight:600;font-size:14px;transition:background 0.2s;}
+  .btn-goto:hover{background:var(--teal-dark);}
+
+  /* Loading */
+  .loading-wrap{text-align:center;padding:50px;color:var(--muted);}
+  .spinner{width:34px;height:34px;border:3px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 14px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* Inbox header bar */
+  .inbox-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:18px;}
+  .inbox-bar-left{display:flex;align-items:center;gap:10px;}
+  .inbox-title{font-family:'Fraunces',serif;font-size:1.25rem;font-weight:600;color:var(--text);}
+  .unread-pill{display:inline-flex;align-items:center;gap:4px;background:var(--teal);color:#fff;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:700;}
+  .unread-pill.hidden{display:none;}
+  .btn-mark-all{padding:7px 16px;border:1.5px solid var(--border);border-radius:20px;background:#fff;color:var(--muted);font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;}
+  .btn-mark-all:hover{border-color:var(--teal);color:var(--teal);}
+
+  /* Filter tabs */
+  .filter-tabs{display:flex;gap:6px;margin-bottom:18px;background:var(--white);padding:5px;border-radius:50px;border:1px solid var(--border);width:fit-content;}
+  .ftab{padding:7px 18px;border-radius:50px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.2s;}
+  .ftab.active{background:var(--teal);color:#fff;}
+
+  /* Empty */
+  .empty-inbox{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);padding:50px 24px;text-align:center;animation:fadeUp 0.4s ease;}
+  .empty-inbox .ei{font-size:3rem;margin-bottom:14px;}
+  .empty-inbox p{font-size:14px;color:var(--muted);}
+
+  /* Message card */
+  .msg-card{background:var(--white);border-radius:var(--radius);box-shadow:var(--card-shadow);border:1.5px solid var(--border);margin-bottom:12px;overflow:hidden;transition:border-color 0.2s,box-shadow 0.2s;animation:fadeUp 0.35s ease both;}
+  .msg-card.unread{border-color:var(--teal);box-shadow:0 4px 18px rgba(26,158,143,0.13);}
+  .msg-card-header{display:flex;align-items:flex-start;gap:14px;padding:18px 20px;cursor:pointer;user-select:none;}
+  .msg-card-header:hover{background:#fafbfc;}
+  .msg-avatar{width:42px;height:42px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;flex-shrink:0;}
+  .msg-card.unread .msg-avatar{background:var(--teal-dark);}
+  .msg-header-content{flex:1;min-width:0;}
+  .msg-from-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:3px;}
+  .msg-from{font-weight:700;font-size:13.5px;color:var(--text);}
+  .msg-time{font-size:11.5px;color:var(--muted);white-space:nowrap;flex-shrink:0;}
+  .msg-subject-row{display:flex;align-items:center;gap:8px;}
+  .msg-subject{font-size:14.5px;font-weight:600;color:var(--text);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .msg-subject.unread{color:var(--teal-dark);}
+  .unread-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);flex-shrink:0;}
+  .msg-preview{font-size:13px;color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .msg-profile-chip{display:inline-flex;align-items:center;gap:4px;background:var(--teal-light);color:var(--teal-dark);border-radius:10px;padding:2px 9px;font-size:11.5px;font-weight:700;margin-top:5px;}
+  .msg-chevron{font-size:13px;color:var(--muted);transition:transform 0.25s;flex-shrink:0;margin-top:3px;}
+  .msg-card.open .msg-chevron{transform:rotate(180deg);}
+
+  /* Expanded body */
+  .msg-body{display:none;padding:0 20px 20px;border-top:1px solid var(--border);margin-top:0;}
+  .msg-card.open .msg-body{display:block;}
+  .msg-body-inner{background:#fafbfc;border-radius:var(--radius-sm);padding:16px 18px;margin-top:16px;font-size:14.5px;color:#374151;line-height:1.75;white-space:pre-wrap;border:1px solid var(--border);}
+  .msg-body-meta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:14px;}
+  .msg-read-stamp{font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:5px;}
+  .msg-read-stamp .dot{width:6px;height:6px;border-radius:50%;background:#10b981;flex-shrink:0;}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+  @media(max-width:640px){
+    .inbox-bar{flex-direction:column;align-items:flex-start;}
+    .filter-tabs{width:100%;justify-content:center;}
+  }
+
+  /* Smooth page entry */
+  body { animation: pageIn 0.3s ease both; transition: opacity 0.18s ease; }
+  @keyframes pageIn { from { opacity:0; } to { opacity:1; } }
+
+  /* ═══════════════════════════════════════════
+     SHARED NAVBAR — NutriPlan consistent style
+  ═══════════════════════════════════════════ */
+  #topnav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    height: 60px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    box-shadow: 0 1px 12px rgba(0,0,0,0.06);
+  }
+  .nav-brand {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    color: var(--teal);
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    text-decoration: none;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .nav-brand span { color: var(--text); font-weight: 300; font-style: italic; }
+  .nav-center {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .nav-link {
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 7px 16px;
+    border-radius: 20px;
+    position: relative;
+    transition: color 0.18s, background 0.18s, box-shadow 0.18s;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+  }
+  .nav-link:hover { color: var(--teal-dark); background: rgba(26,158,143,0.10); }
+  .nav-link.active { color: #ffffff; font-weight: 800; background: var(--teal); box-shadow: 0 4px 14px rgba(26,158,143,0.28); }
+  .nav-link-auth { display: none; }
+  .nav-link-auth.visible { display: flex; }
+  .nav-msg-dot {
+    position: absolute; top: 4px; right: 5px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #dc2626; border: 2px solid #fff; display: none;
+  }
+  .nav-msg-dot.show { display: block; }
+  .nav-right {
+    display: flex; align-items: center; gap: 10px;
+    position: relative; z-index: 1; flex-shrink: 0;
+  }
+  .nav-signin-btn {
+    display: none; align-items: center; gap: 6px;
+    background: var(--teal); color: #fff; border: none;
+    border-radius: 20px; padding: 8px 18px; font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; text-decoration: none;
+  }
+  .nav-signin-btn:hover { background: var(--teal-dark); }
+  .nav-signin-btn.show { display: flex; }
+  .nav-profile-btn {
+    display: none; align-items: center; justify-content: center;
+    width: 38px; height: 38px; border-radius: 50%; background: var(--teal);
+    color: #fff; font-family: 'Fraunces', serif; font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; border: 2px solid var(--teal-light); flex-shrink: 0;
+    transition: background 0.2s, transform 0.15s; position: relative;
+  }
+  .nav-profile-btn:hover { background: var(--teal-dark); transform: scale(1.05); }
+  .nav-profile-btn.show { display: flex; }
+  #avatar-dropdown {
+    display: none; position: absolute; top: calc(100% + 10px); right: 0;
+    background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.14); min-width: 200px; z-index: 300;
+    overflow: hidden; animation: navDropIn 0.18s ease;
+  }
+  #avatar-dropdown.open { display: block; }
+  @keyframes navDropIn { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+  .avatar-dd-item {
+    display: flex; align-items: center; gap: 10px; padding: 13px 18px;
+    font-size: 14px; font-weight: 500; color: var(--text); cursor: pointer;
+    text-decoration: none; transition: background 0.15s; border: none;
+    background: none; width: 100%; font-family: 'DM Sans', sans-serif;
+  }
+  .avatar-dd-item:hover { background: var(--teal-light); color: var(--teal); }
+  .avatar-dd-item.danger:hover { background: #fef2f2; color: #dc2626; }
+  .avatar-dd-sep { height: 1px; background: var(--border); margin: 4px 0; }
+  .avatar-dd-icon { font-size: 1.1rem; }
+  @media (max-width: 700px) {
+    #topnav { padding: 0 12px; }
+    .nav-center { position: static; transform: none; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; flex: 1; margin: 0 8px; justify-content: flex-start; }
+    .nav-center::-webkit-scrollbar { display: none; }
+    .nav-link { font-size: 12.5px; padding: 6px 11px; }
+    .nav-brand { font-size: 1.1rem; }
+  }
+  @media (max-width: 480px) { .nav-link { font-size: 12px; padding: 5px 9px; } }
+
+</style>
+
+<script>
+// Instant nav flash prevention
+(function(){
+  var cached = localStorage.getItem('np_auth');
+  var s = document.createElement('style');
+  s.textContent = cached === 'signed-in'
+    ? '#nav-signin-btn{display:none!important}#nav-profile-btn{display:flex!important}.nav-link-auth{display:flex!important}'
+    : '#nav-profile-btn{display:none!important}#nav-signin-btn{display:flex!important}.nav-link-auth{display:none!important}';
+  document.head.appendChild(s);
+})();
+</script>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     NAVBAR — logo | center nav | profile
+════════════════════════════════════════════════════ -->
+<nav id="topnav">
+  <a class="nav-brand" href="index.html">Nutri<span>Plan</span></a>
+  <!-- CENTER nav -->
+  <div class="nav-center" id="nav-center">
+    <a class="nav-link" href="index.html">Welcome</a>
+    <a class="nav-link" href="javascript:void(0)" onclick="smoothNavigate('index.html?step=education')">Education</a>
+    <a class="nav-link" href="javascript:void(0)" onclick="smoothNavigate('index.html?step=assessment')">Assessment</a>
+    <a class="nav-link nav-link-auth" href="dietplan.html">Dietplan</a>
+    <a class="nav-link nav-link-auth" href="comments.html">Comments</a>
+    <a class="nav-link nav-link-auth active" href="messages.html" style="position:relative;">Messages<span class="nav-msg-dot" id="nav-msg-dot"></span></a>
+    
+  </div>
+  <div class="nav-right">
+    <a href="profile.html" class="nav-signin-btn" id="nav-signin-btn">Sign In</a>
+    <div style="position:relative;flex-shrink:0;" id="nav-profile-wrap">
+      <button class="nav-profile-btn" id="nav-profile-btn" onclick="toggleNavDropdown()" title="My Account"></button>
+      <div id="avatar-dropdown">
+        <a href="profile.html" class="avatar-dd-item"><span class="avatar-dd-icon">📋</span> Profiles</a>
+        <div class="avatar-dd-sep"></div>
+        <button class="avatar-dd-item danger" onclick="doNavSignOut()"><span class="avatar-dd-icon">🚪</span> Sign Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <h1>Your <em>Messages</em></h1>
+  <p>Personal messages and updates from the NutriPlan team.</p>
+</section>
+
+<div class="page-outer">
+
+  <!-- Not signed in -->
+  <div id="prompt-view" class="signin-prompt" style="display:none;">
+    <div class="icon">🔐</div>
+    <h2>Sign In to See Your Messages</h2>
+    <p>Your messages are private and linked to your account. Please sign in to view them.</p>
+    <a href="profile.html" class="btn-goto">Sign In →</a>
+  </div>
+
+  <!-- Loading -->
+  <div id="loading-view" class="loading-wrap">
+    <div class="spinner"></div>
+    <p>Loading your messages…</p>
+  </div>
+
+  <!-- Inbox -->
+  <div id="inbox-view" style="display:none;">
+    <div class="inbox-bar">
+      <div class="inbox-bar-left">
+        <div class="inbox-title">Inbox</div>
+        <div class="unread-pill hidden" id="unread-pill">
+          <span id="unread-count">0</span> unread
+        </div>
+      </div>
+      <button class="btn-mark-all" id="btn-mark-all" onclick="markAllRead()" style="display:none;">✓ Mark all as read</button>
+    </div>
+
+    <div class="filter-tabs">
+      <div class="ftab active" onclick="setFilter('all',this)">All</div>
+      <div class="ftab" onclick="setFilter('unread',this)">Unread</div>
+    </div>
+
+    <div id="msg-list"></div>
+  </div>
+
+</div>
+
+<script type="module">
+import { initializeApp }    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut }
+                            from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, setDoc, query, orderBy }
+                            from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC5U_ZtL6ki_LnOS-L6U0jIkWj3vVny1XQ",
+  authDomain: "nutriplan-65582.firebaseapp.com",
+  projectId: "nutriplan-65582",
+  storageBucket: "nutriplan-65582.firebasestorage.app",
+  messagingSenderId: "851509980462",
+  appId: "1:851509980462:web:b18af741addba334ca1ebf"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+let allMessages = [];
+let currentFilter = 'all';
+let currentUid = null;
+const markedReadLocal = new Set();
+
+// ── SMOOTH NAV TRANSITION ──────────────────────────────────
+window.smoothNavigate = function(url) {
+  document.body.style.transition = 'opacity 0.18s ease';
+  document.body.style.opacity = '0';
+  setTimeout(() => { window.location.href = url; }, 180);
+};
+
+// ── Auth state ──────────────────────────────────────────────
+
+/* ── SHARED NAVBAR LOGIC ─────────────────────── */
+window.toggleNavDropdown = function() {
+  const dd = document.getElementById('avatar-dropdown');
+  if (dd) dd.classList.toggle('open');
+};
+document.addEventListener('click', function(e) {
+  const wrap = document.getElementById('nav-profile-wrap');
+  const dd = document.getElementById('avatar-dropdown');
+  if (wrap && dd && !wrap.contains(e.target)) dd.classList.remove('open');
+});
+window.doNavSignOut = async function doNavSignOut() {
+  try {
+    const { getAuth, signOut } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+    if (window._fbAuth) await signOut(window._fbAuth);
+  } catch(e) {}
+  localStorage.removeItem('np_auth');
+  localStorage.removeItem('nutriplan_uid');
+  localStorage.removeItem('nutriplan_email');
+  const pb = document.getElementById('nav-profile-btn');
+  const sb = document.getElementById('nav-signin-btn');
+  const dd = document.getElementById('avatar-dropdown');
+  if (pb) pb.classList.remove('show');
+  if (sb) sb.classList.add('show');
+  if (dd) dd.classList.remove('open');
+  _updateAuthNavLinks(false);
+  window.location.href = 'index.html';
+}
+function _updateAuthNavLinks(signedIn) {
+  document.querySelectorAll('.nav-link-auth').forEach(el => {
+    el.classList.toggle('visible', signedIn);
+  });
+}
+
+onAuthStateChanged(auth, async user => {
+  // Update nav buttons
+  const profileBtn = document.getElementById('nav-profile-btn');
+  const signinBtn  = document.getElementById('nav-signin-btn');
+  if (user) {
+    localStorage.setItem('np_auth', 'signed-in');
+    profileBtn.textContent = (user.email||'?').slice(0,2).toUpperCase();
+    profileBtn.classList.add('show');
+    signinBtn.classList.remove('show');
+    _updateAuthNavLinks(true);
+    currentUid = user.uid;
+    await loadMessages(user.uid);
+  } else {
+    localStorage.removeItem('np_auth');
+    profileBtn.classList.remove('show');
+    signinBtn.classList.add('show');
+    _updateAuthNavLinks(false);
+    document.getElementById('loading-view').style.display = 'none';
+    document.getElementById('prompt-view').style.display = 'block';
+  }
+});
+
+// ── Load messages ──────────────────────────────────────────
+async function loadMessages(uid) {
+  try {
+    const snap = await getDocs(query(collection(db, "messages", uid, "inbox"), orderBy("sentAt", "desc")));
+    allMessages = snap.docs.map(d => ({ _id: d.id, ...d.data() }));
+  } catch(e) {
+    try {
+      const snap2 = await getDocs(collection(db, "messages", uid, "inbox"));
+      allMessages = snap2.docs.map(d => ({ _id: d.id, ...d.data() }));
+      allMessages.sort((a,b) => (b.sentAt?.seconds||0) - (a.sentAt?.seconds||0));
+    } catch(e2) {
+      allMessages = [];
+    }
+  }
+
+  document.getElementById('loading-view').style.display = 'none';
+  document.getElementById('inbox-view').style.display = 'block';
+  renderMessages();
+}
+
+// ── Render ──────────────────────────────────────────────────
+function renderMessages() {
+  const list  = document.getElementById('msg-list');
+  const unreadCount = allMessages.filter(m => !m.read && !markedReadLocal.has(m._id)).length;
+
+  // Update unread pill
+  const pill = document.getElementById('unread-pill');
+  document.getElementById('unread-count').textContent = unreadCount;
+  pill.classList.toggle('hidden', unreadCount === 0);
+
+  // Update mark-all button
+  const markAllBtn = document.getElementById('btn-mark-all');
+  markAllBtn.style.display = unreadCount > 0 ? 'inline-flex' : 'none';
+
+  // Update nav dot
+  document.getElementById('nav-msg-dot').classList.toggle('show', unreadCount > 0);
+
+  const filtered = currentFilter === 'unread'
+    ? allMessages.filter(m => !m.read && !markedReadLocal.has(m._id))
+    : allMessages;
+
+  if (filtered.length === 0) {
+    list.innerHTML = `
+      <div class="empty-inbox">
+        <div class="ei">${currentFilter === 'unread' ? '✅' : '📭'}</div>
+        <p>${currentFilter === 'unread' ? 'All caught up! No unread messages.' : 'No messages yet. The NutriPlan team will send you updates here.'}</p>
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map((m, i) => {
+    const isUnread = !m.read && !markedReadLocal.has(m._id);
+    const timeStr  = formatTime(m.sentAt);
+    const preview  = (m.body||'').replace(/\n/g,' ').slice(0, 80) + ((m.body||'').length > 80 ? '…' : '');
+    return `
+      <div class="msg-card ${isUnread?'unread':''}" id="mc-${m._id}" style="animation-delay:${i*0.05}s">
+        <div class="msg-card-header" onclick="toggleMsg('${m._id}')">
+          <div class="msg-avatar">N</div>
+          <div class="msg-header-content">
+            <div class="msg-from-row">
+              <div class="msg-from">NutriPlan Team</div>
+              <div class="msg-time">${timeStr}</div>
+            </div>
+            <div class="msg-subject-row">
+              ${isUnread ? '<div class="unread-dot"></div>' : ''}
+              <div class="msg-subject ${isUnread?'unread':''}">${esc(m.subject||'(no subject)')}</div>
+            </div>
+            ${m.profileName ? `<div class="msg-profile-chip">👤 Re: ${esc(m.profileName)}</div>` : ''}
+            <div class="msg-preview">${esc(preview)}</div>
+          </div>
+          <div class="msg-chevron">▾</div>
+        </div>
+        <div class="msg-body">
+          <div class="msg-body-inner">${esc(m.body||'')}</div>
+          <div class="msg-body-meta">
+            <div class="msg-read-stamp">
+              <div class="dot"></div>
+              <span>Read · ${timeStr}</span>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── Toggle open/close ──────────────────────────────────────
+window.toggleMsg = async function(msgId) {
+  const card = document.getElementById('mc-' + msgId);
+  if (!card) return;
+  const isOpening = !card.classList.contains('open');
+  card.classList.toggle('open');
+
+  if (isOpening && !markedReadLocal.has(msgId)) {
+    const msg = allMessages.find(m => m._id === msgId);
+    if (msg && !msg.read) {
+      markedReadLocal.add(msgId);
+      card.classList.remove('unread');
+      card.querySelector('.msg-subject')?.classList.remove('unread');
+      card.querySelector('.unread-dot')?.remove();
+      // Update counts
+      const remaining = allMessages.filter(m => !m.read && !markedReadLocal.has(m._id)).length;
+      document.getElementById('unread-count').textContent = remaining;
+      document.getElementById('unread-pill').classList.toggle('hidden', remaining === 0);
+      document.getElementById('btn-mark-all').style.display = remaining > 0 ? 'inline-flex' : 'none';
+      document.getElementById('nav-msg-dot').classList.toggle('show', remaining > 0);
+      // Persist to Firestore
+      if (currentUid) {
+        try { await setDoc(doc(db, "messages", currentUid, "inbox", msgId), { read: true }, { merge: true }); } catch(_){}
+      }
+    }
+  }
+};
+
+// ── Filter ─────────────────────────────────────────────────
+window.setFilter = function(val, btn) {
+  currentFilter = val;
+  document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderMessages();
+};
+
+// ── Mark all read ──────────────────────────────────────────
+window.markAllRead = async function() {
+  const unread = allMessages.filter(m => !m.read && !markedReadLocal.has(m._id));
+  unread.forEach(m => markedReadLocal.add(m._id));
+  renderMessages();
+  if (currentUid) {
+    for (const m of unread) {
+      try { await setDoc(doc(db, "messages", currentUid, "inbox", m._id), { read: true }, { merge: true }); } catch(_){}
+    }
+  }
+};
+
+// ── Helpers ────────────────────────────────────────────────
+function esc(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function formatTime(ts) {
+  if (!ts) return '';
+  try {
+    const d = ts.toDate ? ts.toDate() : new Date((ts.seconds||0)*1000);
+    const now = new Date();
+    const diff = now - d;
+    if (diff < 60000)  return 'Just now';
+    if (diff < 3600000) return Math.floor(diff/60000) + 'm ago';
+    if (diff < 86400000) return Math.floor(diff/3600000) + 'h ago';
+    if (diff < 604800000) return Math.floor(diff/86400000) + 'd ago';
+    return d.toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'});
+  } catch { return ''; }
+}
+</script>
+
+</body>
+</html>
