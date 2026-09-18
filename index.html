@@ -1465,6 +1465,77 @@
   .msdd-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
   .msdd-empty { padding: 14px 4px; font-size: 13px; color: var(--muted); text-align: center; }
 
+  /* ════════════════════════════════════════════
+     DIETARY CONSIDERATIONS (LIMIT / AVOID)
+     — inline expandable section within a food row
+  ════════════════════════════════════════════ */
+  .msdd-option-body { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+  .dietary-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 5px;
+    padding: 2px 0;
+    border: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #b45309;
+    cursor: pointer;
+    line-height: 1.4;
+    width: fit-content;
+  }
+  .dietary-toggle:hover { text-decoration: underline; }
+  .dietary-toggle .dt-icon { font-size: 11px; }
+  .dietary-toggle .dt-chevron { font-size: 9px; color: var(--muted); margin-left: 1px; transition: transform 0.15s ease; display: inline-block; }
+  .dietary-toggle[aria-expanded="true"] .dt-chevron { transform: rotate(180deg); }
+
+  .dietary-panel {
+    margin-top: 7px;
+    padding-top: 8px;
+    padding-left: 2px;
+    border-top: 1px dashed var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: dietaryFadeIn 0.15s ease;
+  }
+  .dietary-panel[hidden] { display: none; }
+  @keyframes dietaryFadeIn { from { opacity: 0; transform: translateY(-2px); } to { opacity: 1; transform: translateY(0); } }
+
+  .dietary-block-heading {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .dietary-block-heading.is-limit { color: #b45309; }
+  .dietary-block-heading.is-avoid { color: #b91c1c; }
+
+  .dietary-block ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+  .dietary-block li {
+    font-size: 12.5px;
+    color: var(--text);
+    padding-left: 13px;
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 5px;
+    row-gap: 2px;
+  }
+  .dietary-block li::before { content: "•"; position: absolute; left: 1px; color: var(--muted); }
+
+  @media (max-width: 560px) {
+    .dietary-toggle { font-size: 12px; }
+    .dietary-block li { font-size: 13px; }
+  }
+
   /* ── PERSISTENT SELECTED ITEMS AREA ── */
   .fp-selected-area {
     display: none;
@@ -4727,6 +4798,193 @@ window.removeMsddTag = function(id, value) {
   const cb = document.querySelector('#'+id+'-list input[value="'+value+'"]');
   if (cb) { cb.checked=false; msddChange(id); }
 };
+
+// ══════════════════════════════════════════════════════════════
+// DIETARY CONSIDERATIONS — Food → Condition → Action (+ Reason)
+// ------------------------------------------------------------
+// One food can map to MULTIPLE condition/action pairs. A food is
+// NEVER labeled "limit" or "avoid" on its own — the restriction is
+// always tied to a specific health condition. Conditions shown in
+// the UI are read straight from this data (nothing is hardcoded
+// into the markup), so adding/removing entries here is all that's
+// needed to change what the accordion displays.
+//
+// action: "limit" | "avoid"
+// ══════════════════════════════════════════════════════════════
+const FOOD_DIETARY_DATA = {
+  "Spinach": [
+    { condition: "Thyroid", action: "limit", reason: "Contains goitrogens which, in large amounts, can interfere with thyroid hormone production." },
+    { condition: "Kidney Disease", action: "avoid", reason: "High in oxalates and potassium, which can burden compromised kidneys." }
+  ],
+  "Broccoli": [
+    { condition: "Thyroid", action: "limit", reason: "A cruciferous vegetable containing goitrogenic compounds." },
+    { condition: "IBS", action: "limit", reason: "High fiber content can trigger bloating and gas in sensitive digestive systems." }
+  ],
+  "Beetroot": [
+    { condition: "Diabetes", action: "limit", reason: "Naturally high in sugars, which can raise blood glucose levels." },
+    { condition: "Kidney Disease", action: "avoid", reason: "High oxalate and potassium content can worsen kidney stone risk and strain kidney function." }
+  ],
+  "Guava": [
+    { condition: "IBS", action: "limit", reason: "High fiber and seed content may aggravate digestive symptoms." }
+  ],
+  "Banana": [
+    { condition: "Diabetes", action: "limit", reason: "Relatively high natural sugar content can spike blood glucose." },
+    { condition: "Kidney Disease", action: "limit", reason: "High in potassium, which needs to be monitored in kidney disease." }
+  ],
+  "Mango": [
+    { condition: "Diabetes", action: "limit", reason: "High natural sugar content raises the glycemic load." }
+  ],
+  "Grapes": [
+    { condition: "Diabetes", action: "limit", reason: "Concentrated natural sugars can raise blood glucose quickly." }
+  ],
+  "Orange": [
+    { condition: "IBS", action: "limit", reason: "Citrus acidity can trigger symptoms in sensitive digestive systems." }
+  ],
+  "Tomato": [
+    { condition: "IBS", action: "limit", reason: "Acidity can trigger digestive discomfort." },
+    { condition: "Arthritis", action: "limit", reason: "A nightshade vegetable some people find worsens joint inflammation." }
+  ],
+  "Almonds": [
+    { condition: "Kidney Disease", action: "limit", reason: "High in phosphorus and potassium, which need to be limited in kidney disease." }
+  ],
+  "Cashews": [
+    { condition: "Kidney Disease", action: "limit", reason: "High phosphorus content adds to mineral load on the kidneys." },
+    { condition: "Diabetes", action: "limit", reason: "Calorie-dense and can affect portion-controlled meal plans." }
+  ],
+  "Chia Seeds": [
+    { condition: "IBS", action: "limit", reason: "Very high fiber content can cause bloating if introduced too quickly." }
+  ],
+  "Flaxseeds": [
+    { condition: "IBS", action: "limit", reason: "High fiber load can aggravate gut symptoms in sensitive individuals." }
+  ],
+  "Soybean Sprouts": [
+    { condition: "Thyroid", action: "limit", reason: "Soy contains goitrogenic compounds that may affect thyroid hormone uptake." }
+  ],
+  "Kidney Bean Sprouts": [
+    { condition: "Kidney Disease", action: "limit", reason: "High in potassium and phosphorus, which need to be monitored in kidney disease." }
+  ],
+  "Quinoa": [
+    { condition: "Kidney Disease", action: "limit", reason: "Contains moderate oxalates and phosphorus levels." }
+  ],
+  "White Rice": [
+    { condition: "Diabetes", action: "limit", reason: "High glycemic index can cause rapid blood sugar spikes." }
+  ],
+  "Milk": [
+    { condition: "IBS", action: "limit", reason: "Lactose content can trigger bloating and discomfort in sensitive individuals." },
+    { condition: "Kidney Disease", action: "limit", reason: "Contains phosphorus and potassium that need monitoring in kidney disease." }
+  ],
+  "Ghee": [
+    { condition: "Heart Disease", action: "limit", reason: "High in saturated fat, which should be moderated for heart health." },
+    { condition: "High Cholesterol", action: "limit", reason: "Saturated fat content can raise LDL cholesterol if overused." }
+  ],
+  "Egg": [
+    { condition: "High Cholesterol", action: "limit", reason: "The yolk is a concentrated source of dietary cholesterol." }
+  ],
+  "Mutton": [
+    { condition: "Heart Disease", action: "limit", reason: "High in saturated fat, which is best moderated for heart health." },
+    { condition: "High Cholesterol", action: "limit", reason: "Saturated fat content can raise LDL cholesterol." }
+  ],
+  "Beef": [
+    { condition: "Heart Disease", action: "limit", reason: "High saturated fat content is best moderated for cardiovascular health." },
+    { condition: "High Cholesterol", action: "limit", reason: "Contains higher levels of saturated fat and cholesterol." }
+  ],
+  "Pork": [
+    { condition: "Heart Disease", action: "limit", reason: "Higher saturated fat cuts are best limited for heart health." }
+  ],
+  "Prawns": [
+    { condition: "High Cholesterol", action: "limit", reason: "Shellfish are relatively high in dietary cholesterol." }
+  ],
+  "Crab": [
+    { condition: "High Cholesterol", action: "limit", reason: "Contains notable dietary cholesterol." },
+    { condition: "Kidney Disease", action: "avoid", reason: "High in sodium and purines, which can burden compromised kidneys." }
+  ]
+};
+
+// ── Build the LIMIT / AVOID panel markup for one food ──
+function buildDietaryPanelHTML(entries) {
+  const limitItems = entries.filter(e => e.action === 'limit');
+  const avoidItems = entries.filter(e => e.action === 'avoid');
+
+  const renderList = (items, cls) => items.map((e, i) => {
+    return `<li><span>${e.condition}</span></li>`;
+  }).join('');
+
+  let html = '';
+  if (limitItems.length) {
+    html += `<div class="dietary-block">
+      <div class="dietary-block-heading is-limit"><span>⚠</span><span>LIMIT</span></div>
+      <ul>${renderList(limitItems, 'limit')}</ul>
+    </div>`;
+  }
+  if (avoidItems.length) {
+    html += `<div class="dietary-block">
+      <div class="dietary-block-heading is-avoid"><span>⛔</span><span>AVOID</span></div>
+      <ul>${renderList(avoidItems, 'avoid')}</ul>
+    </div>`;
+  }
+  return html;
+}
+
+// ── Toggle one food's dietary considerations panel (independent per item) ──
+window.toggleDietaryConsiderations = function(evt, btn) {
+  evt.preventDefault();
+  evt.stopPropagation();
+  const panel = btn.nextElementSibling;
+  const expanded = btn.getAttribute('aria-expanded') === 'true';
+  const willExpand = !expanded;
+  btn.setAttribute('aria-expanded', String(willExpand));
+  if (panel) panel.hidden = expanded;
+  const chevron = btn.querySelector('.dt-chevron');
+  if (chevron) chevron.textContent = expanded ? '›' : '˅';
+
+  // Bring the newly-opened panel into view — it can otherwise land
+  // below the fold of the scrollable food list (or the page).
+  if (willExpand && panel) {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    });
+  }
+};
+
+// ── Inject a "Dietary considerations" row into every matching food option ──
+function initDietaryConsiderations() {
+  document.querySelectorAll('.msdd-option').forEach(label => {
+    const checkbox = label.querySelector('input[type="checkbox"]');
+    if (!checkbox) return;
+    const entries = FOOD_DIETARY_DATA[checkbox.value];
+    if (!entries || !entries.length) return; // rule 9: no entry, no row at all
+
+    const body = label.querySelector('.msdd-option-name')?.parentElement;
+    if (!body || body.querySelector('.dietary-toggle')) return; // already built
+
+    body.classList.add('msdd-option-body');
+
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'dietary-toggle';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.onclick = function(e) { toggleDietaryConsiderations(e, this); };
+    toggle.innerHTML = `<span class="dt-icon">⚠</span><span>Dietary considerations</span><span class="dt-chevron">›</span>`;
+
+    const panel = document.createElement('div');
+    panel.className = 'dietary-panel';
+    panel.hidden = true;
+    panel.innerHTML = buildDietaryPanelHTML(entries);
+    // Prevent taps inside the expanded panel from toggling the food checkbox
+    panel.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); });
+
+    body.appendChild(toggle);
+    body.appendChild(panel);
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initDietaryConsiderations);
+} else {
+  initDietaryConsiderations();
+}
 
 // ── FOOD PREFERENCE CATEGORY SELECTED ITEMS ──
 // Maps each accordion section-id → array of msdd-ids that belong to it
