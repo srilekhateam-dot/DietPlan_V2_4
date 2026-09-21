@@ -1373,7 +1373,7 @@
   .accordion-header .chevron { transition: transform 0.3s; font-size: 12px; color: var(--muted); }
   .accordion-header.open .chevron { transform: rotate(180deg); }
   .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.38s cubic-bezier(.4,0,.2,1), padding 0.25s; padding: 0 16px; background: var(--white); border-top: 0px solid transparent; }
-  .accordion-body.open { max-height: 1200px; padding: 10px 16px 16px; overflow: visible; border-top: 1px solid var(--border); }
+  .accordion-body.open { max-height: 8000px; padding: 10px 16px 16px; overflow: visible; border-top: 1px solid var(--border); }
 
   .yn-toggle { display: flex; gap: 10px; margin: 10px 0 14px; }
   .yn-btn { padding: 7px 22px; border-radius: 50px; border: 1.5px solid var(--border); background: var(--bg); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
@@ -1576,6 +1576,18 @@
     .fp-selected-area { padding: 7px 14px 9px; }
     .fp-selected-chip { font-size: 12px; padding: 2px 9px; }
   }
+
+  /* ── Food preference sub-groups (Morning Drinks / Fruits) ── */
+  .fp-subgroup { margin-top: 14px; }
+  .fp-subgroup:first-child { margin-top: 4px; }
+  .fp-subgroup-title { font-size: 13px; font-weight: 800; letter-spacing: 0.3px; color: var(--teal-dark); margin-bottom: 4px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+  .fp-details { border: 1.5px solid var(--border); border-radius: var(--radius-sm); margin-top: 10px; background: var(--white); overflow: hidden; }
+  .fp-details > summary { list-style: none; cursor: pointer; padding: 12px 16px; font-weight: 700; font-size: 14px; background: var(--bg); display: flex; justify-content: space-between; align-items: center; user-select: none; transition: background 0.2s; }
+  .fp-details > summary::-webkit-details-marker { display: none; }
+  .fp-details > summary::after { content: '▾'; font-size: 12px; color: var(--muted); transition: transform 0.25s; }
+  .fp-details[open] > summary::after { transform: rotate(180deg); }
+  .fp-details > summary:hover { background: var(--teal-light); }
+  .fp-details-body { padding: 4px 16px 16px; border-top: 1px solid var(--border); }
 
   .error-msg { font-size: 13px; font-weight: 700; color: #e74c3c; margin-top: 3px; display: none; }
   .form-group.has-error input, .form-group.has-error select { border-color: #e74c3c; }
@@ -3415,119 +3427,105 @@
           <p style="font-size:13px; color:var(--muted); margin-bottom:8px;">Do you drink morning drinks?</p>
           <div class="yn-toggle"><button class="yn-btn yes active" onclick="ynToggle(this,'yes')">Yes</button><button class="yn-btn no" onclick="ynToggle(this,'no')">No</button></div>
           <div class="drink-options" id="drink-opts">
-            <div class="sub-label">Choose your drinks</div>
-            <div class="msdd-wrap" id="msdd-drinks">
-              <div class="msdd-panel" id="msdd-drinks-panel">
-                <!-- <input type="text" class="msdd-search" placeholder="🔍 Search drinks…" oninput="filterMsdd('msdd-drinks',this.value)" autocomplete="off"/> -->
-                <div class="msdd-list" id="msdd-drinks-list">
-                  <label class="msdd-option"><input type="checkbox" value="Warm Water" onchange="msddChange('msdd-drinks')"/><div><div class="msdd-option-name">Warm Water</div></div></label>
-                  <label class="msdd-option"><input type="checkbox" value="Lemon & Honey" onchange="msddChange('msdd-drinks')"/><div><div class="msdd-option-name">Lemon &amp; Honey</div></div></label>
-                  <label class="msdd-option"><input type="checkbox" value="Green Tea" onchange="msddChange('msdd-drinks')"/><div><div class="msdd-option-name">Green Tea</div></div></label>
-                  <label class="msdd-option"><input type="checkbox" value="Black Coffee" onchange="msddChange('msdd-drinks')"/><div><div class="msdd-option-name">Black Coffee</div></div></label>
-                  <label class="msdd-option"><input type="checkbox" value="Herbal Tea" onchange="msddChange('msdd-drinks')"/><div><div class="msdd-option-name">Herbal Tea</div></div></label>
-                  <label class="msdd-option"><input type="checkbox" value="Milk" onchange="msddChange('msdd-drinks')"/><div><div class="msdd-option-name">Milk</div></div></label>
-                  <label class="msdd-option"><input type="checkbox" value="Detox Water" onchange="msddChange('msdd-drinks')"/><div><div class="msdd-option-name">Detox Water</div></div></label>
+            <div class="fp-subgroup">
+              <div class="fp-subgroup-title">Warm / Plain Water Drinks</div>
+              <div class="msdd-wrap" id="msdd-drinks-warm">
+                <div class="msdd-panel" id="msdd-drinks-warm-panel">
+                  <div class="msdd-list" id="msdd-drinks-warm-list">
+                    <label class="msdd-option"><input type="checkbox" value="Apple Cider Vinegar Tonic" onchange="msddChange('msdd-drinks-warm')"/><div><div class="msdd-option-name">Apple Cider Vinegar Tonic</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Cinnamon Lemon water" onchange="msddChange('msdd-drinks-warm')"/><div><div class="msdd-option-name">Cinnamon Lemon water</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Ginger Turmeric Shots" onchange="msddChange('msdd-drinks-warm')"/><div><div class="msdd-option-name">Ginger Turmeric Shots</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Lemon and Honey Water" onchange="msddChange('msdd-drinks-warm')"/><div><div class="msdd-option-name">Lemon and Honey Water</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Warm Water with Ghee" onchange="msddChange('msdd-drinks-warm')"/><div><div class="msdd-option-name">Warm Water with Ghee</div></div></label>
+                  </div>
                 </div>
+                <div class="msdd-tags" id="msdd-drinks-warm-tags"></div>
               </div>
-              <div class="msdd-tags" id="msdd-drinks-tags"></div>
+            </div>
+            <div class="fp-subgroup">
+              <div class="fp-subgroup-title">Boiled Herbal Waters</div>
+              <div class="msdd-wrap" id="msdd-drinks-herbal">
+                <div class="msdd-panel" id="msdd-drinks-herbal-panel">
+                  <div class="msdd-list" id="msdd-drinks-herbal-list">
+                    <label class="msdd-option"><input type="checkbox" value="Ajwain and jeera water" onchange="msddChange('msdd-drinks-herbal')"/><div><div class="msdd-option-name">Ajwain and jeera water</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Ajwain kadha" onchange="msddChange('msdd-drinks-herbal')"/><div><div class="msdd-option-name">Ajwain kadha</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Cardamom Water" onchange="msddChange('msdd-drinks-herbal')"/><div><div class="msdd-option-name">Cardamom Water</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Cumin Water" onchange="msddChange('msdd-drinks-herbal')"/><div><div class="msdd-option-name">Cumin Water</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Cumin-Coriander-Fennel (CCF) Drink" onchange="msddChange('msdd-drinks-herbal')"/><div><div class="msdd-option-name">Cumin-Coriander-Fennel (CCF) Drink</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Ginger Water" onchange="msddChange('msdd-drinks-herbal')"/><div><div class="msdd-option-name">Ginger Water</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Tulsi and black pepper kadha" onchange="msddChange('msdd-drinks-herbal')"/><div><div class="msdd-option-name">Tulsi and black pepper kadha</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Tulsi Water" onchange="msddChange('msdd-drinks-herbal')"/><div><div class="msdd-option-name">Tulsi Water</div></div></label>
+                  </div>
+                </div>
+                <div class="msdd-tags" id="msdd-drinks-herbal-tags"></div>
+              </div>
+            </div>
+            <div class="fp-subgroup">
+              <div class="fp-subgroup-title">Infused soaked water</div>
+              <div class="msdd-wrap" id="msdd-drinks-infused">
+                <div class="msdd-panel" id="msdd-drinks-infused-panel">
+                  <div class="msdd-list" id="msdd-drinks-infused-list">
+                    <label class="msdd-option"><input type="checkbox" value="Ajwain Water" onchange="msddChange('msdd-drinks-infused')"/><div><div class="msdd-option-name">Ajwain Water</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Fennel seeds water" onchange="msddChange('msdd-drinks-infused')"/><div><div class="msdd-option-name">Fennel seeds water</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Fenugreek Water" onchange="msddChange('msdd-drinks-infused')"/><div><div class="msdd-option-name">Fenugreek Water</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Jeera Water" onchange="msddChange('msdd-drinks-infused')"/><div><div class="msdd-option-name">Jeera Water</div></div></label>
+                  </div>
+                </div>
+                <div class="msdd-tags" id="msdd-drinks-infused-tags"></div>
+              </div>
+            </div>
+            <div class="fp-subgroup">
+              <div class="fp-subgroup-title">Honey medicinal mixes</div>
+              <div class="msdd-wrap" id="msdd-drinks-honey">
+                <div class="msdd-panel" id="msdd-drinks-honey-panel">
+                  <div class="msdd-list" id="msdd-drinks-honey-list">
+                    <label class="msdd-option"><input type="checkbox" value="Clove and honey" onchange="msddChange('msdd-drinks-honey')"/><div><div class="msdd-option-name">Clove and honey</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Honey" onchange="msddChange('msdd-drinks-honey')"/><div><div class="msdd-option-name">Honey</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Honey and cinnamon" onchange="msddChange('msdd-drinks-honey')"/><div><div class="msdd-option-name">Honey and cinnamon</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Honey and lemon" onchange="msddChange('msdd-drinks-honey')"/><div><div class="msdd-option-name">Honey and lemon</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Honey with ginger" onchange="msddChange('msdd-drinks-honey')"/><div><div class="msdd-option-name">Honey with ginger</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Honey with warm water" onchange="msddChange('msdd-drinks-honey')"/><div><div class="msdd-option-name">Honey with warm water</div></div></label>
+                  </div>
+                </div>
+                <div class="msdd-tags" id="msdd-drinks-honey-tags"></div>
+              </div>
+            </div>
+            <div class="fp-subgroup">
+              <div class="fp-subgroup-title">Tea &amp; Coffee Beverages</div>
+              <div class="msdd-wrap" id="msdd-drinks-tea">
+                <div class="msdd-panel" id="msdd-drinks-tea-panel">
+                  <div class="msdd-list" id="msdd-drinks-tea-list">
+                    <label class="msdd-option"><input type="checkbox" value="Black coffee" onchange="msddChange('msdd-drinks-tea')"/><div><div class="msdd-option-name">Black coffee</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Filter coffee" onchange="msddChange('msdd-drinks-tea')"/><div><div class="msdd-option-name">Filter coffee</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Ginger tea" onchange="msddChange('msdd-drinks-tea')"/><div><div class="msdd-option-name">Ginger tea</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Mint Tea" onchange="msddChange('msdd-drinks-tea')"/><div><div class="msdd-option-name">Mint Tea</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Peppermint tea" onchange="msddChange('msdd-drinks-tea')"/><div><div class="msdd-option-name">Peppermint tea</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Tea" onchange="msddChange('msdd-drinks-tea')"/><div><div class="msdd-option-name">Tea</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Tulsi Tea" onchange="msddChange('msdd-drinks-tea')"/><div><div class="msdd-option-name">Tulsi Tea</div></div></label>
+                  </div>
+                </div>
+                <div class="msdd-tags" id="msdd-drinks-tea-tags"></div>
+              </div>
+            </div>
+            <div class="fp-subgroup">
+              <div class="fp-subgroup-title">Morning Milk Options</div>
+              <div class="msdd-wrap" id="msdd-drinks-milk">
+                <div class="msdd-panel" id="msdd-drinks-milk-panel">
+                  <div class="msdd-list" id="msdd-drinks-milk-list">
+                    <label class="msdd-option"><input type="checkbox" value="Almond Milk" onchange="msddChange('msdd-drinks-milk')"/><div><div class="msdd-option-name">Almond Milk</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Milk (Buffalo)" onchange="msddChange('msdd-drinks-milk')"/><div><div class="msdd-option-name">Milk (Buffalo)</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Coconut Milk" onchange="msddChange('msdd-drinks-milk')"/><div><div class="msdd-option-name">Coconut Milk</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Milk (Cow)" onchange="msddChange('msdd-drinks-milk')"/><div><div class="msdd-option-name">Milk (Cow)</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Golden milk/Turmeric Milk" onchange="msddChange('msdd-drinks-milk')"/><div><div class="msdd-option-name">Golden milk/Turmeric Milk</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Oat Milk" onchange="msddChange('msdd-drinks-milk')"/><div><div class="msdd-option-name">Oat Milk</div></div></label>
+                    <label class="msdd-option"><input type="checkbox" value="Soy Milk" onchange="msddChange('msdd-drinks-milk')"/><div><div class="msdd-option-name">Soy Milk</div></div></label>
+                  </div>
+                </div>
+                <div class="msdd-tags" id="msdd-drinks-milk-tags"></div>
+              </div>
             </div>
             <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Select drinks you take each morning on an empty stomach or with breakfast</div>
           </div>
-        </div>
-      </div>
-
-      <!-- Nuts & Seeds -->
-      <div class="accordion-item" id="nuts-section">
-        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Nuts &amp; Seeds</span><span class="chevron">▾</span></div>
-        <div class="fp-selected-area" id="fp-sel-nuts-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-nuts-section-chips"></div></div>
-        <div class="accordion-body">
-          <div class="msdd-side-by-side">
-            <div class="msdd-col">
-              <div class="sub-label">Nuts</div>
-              <div class="msdd-wrap" id="msdd-nuts">
-                <div class="msdd-panel" id="msdd-nuts-panel">
-                  <!-- <input type="text" class="msdd-search" placeholder="🔍 Search nuts…" oninput="filterMsdd('msdd-nuts',this.value)" autocomplete="off"/> -->
-                  <div class="msdd-list" id="msdd-nuts-list">
-                    <label class="msdd-option"><input type="checkbox" value="Almonds" onchange="msddChange('msdd-nuts')"/><div><div class="msdd-option-name">Almonds</div></div></label>
-                    <label class="msdd-option"><input type="checkbox" value="Walnuts" onchange="msddChange('msdd-nuts')"/><div><div class="msdd-option-name">Walnuts</div></div></label>
-                    <label class="msdd-option"><input type="checkbox" value="Cashews" onchange="msddChange('msdd-nuts')"/><div><div class="msdd-option-name">Cashews</div></div></label>
-                    <label class="msdd-option"><input type="checkbox" value="Pistachios" onchange="msddChange('msdd-nuts')"/><div><div class="msdd-option-name">Pistachios</div></div></label>
-                    <label class="msdd-option"><input type="checkbox" value="Peanuts" onchange="msddChange('msdd-nuts')"/><div><div class="msdd-option-name">Peanuts</div></div></label>
-                  </div>
-                </div>
-                <div class="msdd-tags" id="msdd-nuts-tags"></div>
-              </div>
-            </div>
-            <div class="msdd-col">
-              <div class="sub-label">Seeds</div>
-              <div class="msdd-wrap" id="msdd-seeds">
-                <div class="msdd-panel" id="msdd-seeds-panel">
-                  <!-- <input type="text" class="msdd-search" placeholder="🔍 Search seeds…" oninput="filterMsdd('msdd-seeds',this.value)" autocomplete="off"/> -->
-                  <div class="msdd-list" id="msdd-seeds-list">
-                    <label class="msdd-option"><input type="checkbox" value="Sunflower Seeds" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Sunflower Seeds</div></div></label>
-                    <label class="msdd-option"><input type="checkbox" value="Chia Seeds" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Chia Seeds</div></div></label>
-                    <label class="msdd-option"><input type="checkbox" value="Flaxseeds" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Flaxseeds</div></div></label>
-                    <label class="msdd-option"><input type="checkbox" value="Pumpkin Seeds" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Pumpkin Seeds</div></div></label>
-                  </div>
-                </div>
-                <div class="msdd-tags" id="msdd-seeds-tags"></div>
-              </div>
-            </div>
-          </div>
-          <div class="time-chip-hint" style="margin-top:10px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Nuts and seeds are great for healthy fats, protein, and micronutrients</div>
-        </div>
-      </div>
-
-      <!-- Fruits -->
-      <div class="accordion-item" id="fruits-section">
-        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Fruits</span><span class="chevron">▾</span></div>
-        <div class="fp-selected-area" id="fp-sel-fruits-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-fruits-section-chips"></div></div>
-        <div class="accordion-body">
-          <div class="sub-label">Choose Fruits</div>
-          <div class="msdd-wrap" id="msdd-fruits">
-            <div class="msdd-panel" id="msdd-fruits-panel">
-              <!-- <input type="text" class="msdd-search" placeholder="🔍 Search fruits…" oninput="filterMsdd('msdd-fruits',this.value)" autocomplete="off"/> -->
-              <div class="msdd-list" id="msdd-fruits-list">
-                <label class="msdd-option"><input type="checkbox" value="Apple" onchange="msddChange('msdd-fruits')"/><div><div class="msdd-option-name">Apple</div><div class="msdd-option-nutrients">Good source of Dietary Fiber, Vitamin C</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Banana" onchange="msddChange('msdd-fruits')"/><div><div class="msdd-option-name">Banana</div><div class="msdd-option-nutrients">Good source of Vitamin B6, Manganese, Copper, Vitamin C, Potassium</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Papaya" onchange="msddChange('msdd-fruits')"/><div><div class="msdd-option-name">Papaya</div><div class="msdd-option-nutrients">Good source of Vitamin C, Vitamin B9, Selenium, Vitamin B7, Vitamin A</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Orange" onchange="msddChange('msdd-fruits')"/><div><div class="msdd-option-name">Orange</div><div class="msdd-option-nutrients">Good source of Vitamin C, Vitamin B7, Vitamin B9</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Pomegranate" onchange="msddChange('msdd-fruits')"/><div><div class="msdd-option-name">Pomegranate</div><div class="msdd-option-nutrients">Good source of Vitamin K, Vitamin C, Vitamin B9, Vitamin B6, Copper</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Guava" onchange="msddChange('msdd-fruits')"/><div><div class="msdd-option-name">Guava</div><div class="msdd-option-nutrients">Good source of Vitamin C, Dietary Fiber, Copper, Vitamin B9, Manganese</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Mango" onchange="msddChange('msdd-fruits')"/><div><div class="msdd-option-name">Mango</div><div class="msdd-option-nutrients">Good source of Vitamin C, Vitamin B9, Manganese, Vitamin A, Copper</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Berries" onchange="msddChange('msdd-fruits')"/><div><div class="msdd-option-name">Berries</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Grapes" onchange="msddChange('msdd-fruits')"/><div><div class="msdd-option-name">Grapes</div></div></label>
-              </div>
-            </div>
-            <div class="msdd-tags" id="msdd-fruits-tags"></div>
-          </div>
-          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Select fruits you enjoy — they will be included in your daily plan</div>
-        </div>
-      </div>
-
-      <!-- Vegetables -->
-      <div class="accordion-item" id="veggies-section">
-        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Vegetables</span><span class="chevron">▾</span></div>
-        <div class="fp-selected-area" id="fp-sel-veggies-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-veggies-section-chips"></div></div>
-        <div class="accordion-body">
-          <div class="sub-label">Choose Vegetables</div>
-          <div class="msdd-wrap" id="msdd-veggies">
-            <div class="msdd-panel" id="msdd-veggies-panel">
-              <!-- <input type="text" class="msdd-search" placeholder="🔍 Search vegetables…" oninput="filterMsdd('msdd-veggies',this.value)" autocomplete="off"/> -->
-              <div class="msdd-list" id="msdd-veggies-list">
-                <label class="msdd-option"><input type="checkbox" value="Spinach" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Spinach</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Broccoli" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Broccoli</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Carrot" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Carrot</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Cucumber" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Cucumber</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Tomato" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Tomato</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Capsicum" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Capsicum</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Beetroot" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Beetroot</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Zucchini" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Zucchini</div></div></label>
-              </div>
-            </div>
-            <div class="msdd-tags" id="msdd-veggies-tags"></div>
-          </div>
-          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Choose vegetables you like — we will build your meals around these</div>
         </div>
       </div>
 
@@ -3538,15 +3536,14 @@
           <div class="sub-label">Choose Sprouts</div>
           <div class="msdd-wrap" id="msdd-sprouts">
             <div class="msdd-panel" id="msdd-sprouts-panel">
-              <!-- <input type="text" class="msdd-search" placeholder="🔍 Search sprouts…" oninput="filterMsdd('msdd-sprouts',this.value)" autocomplete="off"/> -->
               <div class="msdd-list" id="msdd-sprouts-list">
+                <label class="msdd-option"><input type="checkbox" value="Alfalfa sprouts" onchange="msddChange('msdd-sprouts')"/><div><div class="msdd-option-name">Alfalfa sprouts</div></div></label>
                 <label class="msdd-option"><input type="checkbox" value="Chana (Black Chickpea) Sprouts" onchange="msddChange('msdd-sprouts')"/><div><div class="msdd-option-name">Chana (Black Chickpea) Sprouts</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Soybean Sprouts" onchange="msddChange('msdd-sprouts')"/><div><div class="msdd-option-name">Soybean Sprouts</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Kidney Bean Sprouts" onchange="msddChange('msdd-sprouts')"/><div><div class="msdd-option-name">Kidney Bean Sprouts</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Kidney bean sprouts" onchange="msddChange('msdd-sprouts')"/><div><div class="msdd-option-name">Kidney bean sprouts</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Lentils sprout" onchange="msddChange('msdd-sprouts')"/><div><div class="msdd-option-name">Lentils sprout</div></div></label>
                 <label class="msdd-option"><input type="checkbox" value="Mung Bean Sprouts" onchange="msddChange('msdd-sprouts')"/><div><div class="msdd-option-name">Mung Bean Sprouts</div></div></label>
                 <label class="msdd-option"><input type="checkbox" value="Pea Sprouts" onchange="msddChange('msdd-sprouts')"/><div><div class="msdd-option-name">Pea Sprouts</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Lentil Sprouts" onchange="msddChange('msdd-sprouts')"/><div><div class="msdd-option-name">Lentil Sprouts</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Alfalfa Sprouts" onchange="msddChange('msdd-sprouts')"/><div><div class="msdd-option-name">Alfalfa Sprouts</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Soybean sprouts" onchange="msddChange('msdd-sprouts')"/><div><div class="msdd-option-name">Soybean sprouts</div></div></label>
               </div>
             </div>
             <div class="msdd-tags" id="msdd-sprouts-tags"></div>
@@ -3555,42 +3552,43 @@
         </div>
       </div>
 
-      <div class="accordion-item" id="shakes-section">
-        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Milkshakes &amp; Smoothies</span><span class="chevron">▾</span></div>
-        <div class="fp-selected-area" id="fp-sel-shakes-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-shakes-section-chips"></div></div>
+      <div class="accordion-item" id="milkshakes-section">
+        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Milkshakes</span><span class="chevron">▾</span></div>
+        <div class="fp-selected-area" id="fp-sel-milkshakes-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-milkshakes-section-chips"></div></div>
         <div class="accordion-body">
-          <div class="msdd-side-by-side">
-            <div class="msdd-col">
-              <div class="sub-label">Milkshakes</div>
-              <div class="msdd-wrap" id="msdd-milkshakes">
-                <div class="msdd-panel" id="msdd-milkshakes-panel">
-                  <!-- <input type="text" class="msdd-search" placeholder="🔍 Search milkshakes…" oninput="filterMsdd('msdd-milkshakes',this.value)" autocomplete="off"/> -->
-                  <div class="msdd-list" id="msdd-milkshakes-list">
-                    <label class="msdd-option"><input type="checkbox" value="Banana Peanut Butter Milkshake" onchange="msddChange('msdd-milkshakes')"/><div><div class="msdd-option-name">Banana Peanut Butter Milkshake</div></div></label>
-                    <label class="msdd-option"><input type="checkbox" value="Chia Seeds Milkshake" onchange="msddChange('msdd-milkshakes')"/><div><div class="msdd-option-name">Chia Seeds Milkshake</div></div></label>
-                    <label class="msdd-option"><input type="checkbox" value="Dry Fruit Milkshake" onchange="msddChange('msdd-milkshakes')"/><div><div class="msdd-option-name">Dry Fruit Milkshake</div></div></label>
-                    <label class="msdd-option"><input type="checkbox" value="Banana Milkshake" onchange="msddChange('msdd-milkshakes')"/><div><div class="msdd-option-name">Banana Milkshake</div></div></label>
-                  </div>
-                </div>
-                <div class="msdd-tags" id="msdd-milkshakes-tags"></div>
+          <div class="sub-label">Choose Milkshakes</div>
+          <div class="msdd-wrap" id="msdd-milkshakes">
+            <div class="msdd-panel" id="msdd-milkshakes-panel">
+              <div class="msdd-list" id="msdd-milkshakes-list">
+                <label class="msdd-option"><input type="checkbox" value="Banana Milk shake" onchange="msddChange('msdd-milkshakes')"/><div><div class="msdd-option-name">Banana Milk shake</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Banana peanut butter milkshake" onchange="msddChange('msdd-milkshakes')"/><div><div class="msdd-option-name">Banana peanut butter milkshake</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Chia seeds milkshake" onchange="msddChange('msdd-milkshakes')"/><div><div class="msdd-option-name">Chia seeds milkshake</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Dry fruit Milkshake" onchange="msddChange('msdd-milkshakes')"/><div><div class="msdd-option-name">Dry fruit Milkshake</div></div></label>
               </div>
             </div>
-            <div class="msdd-col">
-              <div class="sub-label">Smoothies</div>
-              <div class="msdd-wrap" id="msdd-smoothies">
-                <div class="msdd-panel" id="msdd-smoothies-panel">
-                  <!-- <input type="text" class="msdd-search" placeholder="🔍 Search smoothies…" oninput="filterMsdd('msdd-smoothies',this.value)" autocomplete="off"/> -->
-                  <div class="msdd-list" id="msdd-smoothies-list">
-                    <label class="msdd-option"><input type="checkbox" value="Chia Seeds Smoothie" onchange="msddChange('msdd-smoothies')"/><div><div class="msdd-option-name">Chia Seeds Smoothie</div></div></label>
-                    <label class="msdd-option"><input type="checkbox" value="Banana and Spinach Smoothie" onchange="msddChange('msdd-smoothies')"/><div><div class="msdd-option-name">Banana and Spinach Smoothie</div></div></label>
-                    <label class="msdd-option"><input type="checkbox" value="Pineapple and Banana Smoothie" onchange="msddChange('msdd-smoothies')"/><div><div class="msdd-option-name">Pineapple and Banana Smoothie</div></div></label>
-                    <label class="msdd-option"><input type="checkbox" value="Pineapple Kiwi Smoothie" onchange="msddChange('msdd-smoothies')"/><div><div class="msdd-option-name">Pineapple Kiwi Smoothie</div></div></label>
-                  </div>
-                </div>
-                <div class="msdd-tags" id="msdd-smoothies-tags"></div>
-              </div>
-            </div>
+            <div class="msdd-tags" id="msdd-milkshakes-tags"></div>
           </div>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Select the milkshakes you enjoy</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="smoothies-section">
+        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Smoothies</span><span class="chevron">▾</span></div>
+        <div class="fp-selected-area" id="fp-sel-smoothies-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-smoothies-section-chips"></div></div>
+        <div class="accordion-body">
+          <div class="sub-label">Choose Smoothies</div>
+          <div class="msdd-wrap" id="msdd-smoothies">
+            <div class="msdd-panel" id="msdd-smoothies-panel">
+              <div class="msdd-list" id="msdd-smoothies-list">
+                <label class="msdd-option"><input type="checkbox" value="Banana and spinach smoothie" onchange="msddChange('msdd-smoothies')"/><div><div class="msdd-option-name">Banana and spinach smoothie</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Chia seeds smoothie" onchange="msddChange('msdd-smoothies')"/><div><div class="msdd-option-name">Chia seeds smoothie</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Pineapple and banana smoothie" onchange="msddChange('msdd-smoothies')"/><div><div class="msdd-option-name">Pineapple and banana smoothie</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Pineapple Kiwi Smoothie" onchange="msddChange('msdd-smoothies')"/><div><div class="msdd-option-name">Pineapple Kiwi Smoothie</div></div></label>
+              </div>
+            </div>
+            <div class="msdd-tags" id="msdd-smoothies-tags"></div>
+          </div>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Select the smoothies you enjoy</div>
         </div>
       </div>
 
@@ -3598,56 +3596,424 @@
         <div class="accordion-header" onclick="toggleAccordion(this)"><span>Porridge &amp; Malt Drinks</span><span class="chevron">▾</span></div>
         <div class="fp-selected-area" id="fp-sel-porridge-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-porridge-section-chips"></div></div>
         <div class="accordion-body">
-          <div class="sub-label">Choose Porridge & Malt drinks from the dropdown</div>
+          <div class="sub-label">Choose Porridge &amp; Malt drinks</div>
           <div class="msdd-wrap" id="msdd-porridge">
             <div class="msdd-panel" id="msdd-porridge-panel">
-              <!-- <input type="text" class="msdd-search" placeholder="🔍 Search porridge &amp; malts…" oninput="filterMsdd('msdd-porridge',this.value)" autocomplete="off"/> -->
+              <input type="text" class="msdd-search" placeholder="🔍 Search Porridge &amp; Malt Drinks…" oninput="filterMsdd('msdd-porridge',this.value)" autocomplete="off"/>
               <div class="msdd-list" id="msdd-porridge-list">
-                <label class="msdd-option"><input type="checkbox" value="Multigrain Malt Drink" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Multigrain Malt Drink</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Jowar Malt" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Jowar Malt</div></div></label>
                 <label class="msdd-option"><input type="checkbox" value="Banana Coconut Quinoa Porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Banana Coconut Quinoa Porridge</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Quinoa Porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Quinoa Porridge</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Oats Porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Oats Porridge</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Little Millet Porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Little Millet Porridge</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Overnight Oats" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Overnight Oats</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Sattu Drink (Roasted Chana Flour Malt)" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Sattu Drink (Roasted Chana Flour Malt)</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Pearl Millet Porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Pearl Millet Porridge</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Rice Kanji" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Rice Kanji</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Finger Millet Porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Finger Millet Porridge</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Kodo Millet Porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Kodo Millet Porridge</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Ragi Malt" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Ragi Malt</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Jowar Porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Jowar Porridge</div></div></label>
                 <label class="msdd-option"><input type="checkbox" value="Barley Malt" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Barley Malt</div></div></label>
                 <label class="msdd-option"><input type="checkbox" value="Barnyard Millet Porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Barnyard Millet Porridge</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Finger Millet Porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Finger Millet Porridge</div></div></label>
                 <label class="msdd-option"><input type="checkbox" value="Foxtail Millet Porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Foxtail Millet Porridge</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Jowar Malt" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Jowar Malt</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Jowar porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Jowar porridge</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Kodo Millet Porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Kodo Millet Porridge</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Little Millet Porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Little Millet Porridge</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Multigrain Malt Drink" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Multigrain Malt Drink</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Oats Porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Oats Porridge</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Overnight Oats" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Overnight Oats</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Pearl Millet Porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Pearl Millet Porridge</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Quinoa Porridge" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Quinoa Porridge</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Ragi Malt" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Ragi Malt</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Rice Kanji" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Rice Kanji</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Sattu Drink (Roasted Chana Flour Malt)" onchange="msddChange('msdd-porridge')"/><div><div class="msdd-option-name">Sattu Drink (Roasted Chana Flour Malt)</div></div></label>
               </div>
             </div>
             <div class="msdd-tags" id="msdd-porridge-tags"></div>
           </div>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Choose the porridge and malt drinks you like</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="nuts-indian-section">
+        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Nuts (Indian)</span><span class="chevron">▾</span></div>
+        <div class="fp-selected-area" id="fp-sel-nuts-indian-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-nuts-indian-section-chips"></div></div>
+        <div class="accordion-body">
+          <div class="sub-label">Choose Nuts (Indian)</div>
+          <div class="msdd-wrap" id="msdd-nuts-indian">
+            <div class="msdd-panel" id="msdd-nuts-indian-panel">
+              <div class="msdd-list" id="msdd-nuts-indian-list">
+                <label class="msdd-option"><input type="checkbox" value="Almond" onchange="msddChange('msdd-nuts-indian')"/><div><div class="msdd-option-name">Almond</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Arecanut (Dried)" onchange="msddChange('msdd-nuts-indian')"/><div><div class="msdd-option-name">Arecanut (Dried)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Arecanut (Fresh)" onchange="msddChange('msdd-nuts-indian')"/><div><div class="msdd-option-name">Arecanut (Fresh)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Cashew nut" onchange="msddChange('msdd-nuts-indian')"/><div><div class="msdd-option-name">Cashew nut</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Coconut (Dry)" onchange="msddChange('msdd-nuts-indian')"/><div><div class="msdd-option-name">Coconut (Dry)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Coconut (Fresh)" onchange="msddChange('msdd-nuts-indian')"/><div><div class="msdd-option-name">Coconut (Fresh)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Ground nut" onchange="msddChange('msdd-nuts-indian')"/><div><div class="msdd-option-name">Ground nut</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Hazelnuts" onchange="msddChange('msdd-nuts-indian')"/><div><div class="msdd-option-name">Hazelnuts</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Pistachio nuts" onchange="msddChange('msdd-nuts-indian')"/><div><div class="msdd-option-name">Pistachio nuts</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Walnut" onchange="msddChange('msdd-nuts-indian')"/><div><div class="msdd-option-name">Walnut</div></div></label>
+              </div>
+            </div>
+            <div class="msdd-tags" id="msdd-nuts-indian-tags"></div>
+          </div>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Nuts are great for healthy fats, protein, and micronutrients</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="nuts-imported-section">
+        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Nuts Imported</span><span class="chevron">▾</span></div>
+        <div class="fp-selected-area" id="fp-sel-nuts-imported-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-nuts-imported-section-chips"></div></div>
+        <div class="accordion-body">
+          <div class="sub-label">Choose Nuts Imported</div>
+          <div class="msdd-wrap" id="msdd-nuts-imported">
+            <div class="msdd-panel" id="msdd-nuts-imported-panel">
+              <div class="msdd-list" id="msdd-nuts-imported-list">
+                <label class="msdd-option"><input type="checkbox" value="Acorns (Dried)" onchange="msddChange('msdd-nuts-imported')"/><div><div class="msdd-option-name">Acorns (Dried)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Acorns (Raw)" onchange="msddChange('msdd-nuts-imported')"/><div><div class="msdd-option-name">Acorns (Raw)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Beechnuts (Dried)" onchange="msddChange('msdd-nuts-imported')"/><div><div class="msdd-option-name">Beechnuts (Dried)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Brazilnuts (Dried)" onchange="msddChange('msdd-nuts-imported')"/><div><div class="msdd-option-name">Brazilnuts (Dried)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Chestnuts (Chinese dried)" onchange="msddChange('msdd-nuts-imported')"/><div><div class="msdd-option-name">Chestnuts (Chinese dried)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Chestnuts (Chinese raw)" onchange="msddChange('msdd-nuts-imported')"/><div><div class="msdd-option-name">Chestnuts (Chinese raw)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Ginkgo nuts (Dried)" onchange="msddChange('msdd-nuts-imported')"/><div><div class="msdd-option-name">Ginkgo nuts (Dried)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Ginkgo nuts (Raw)" onchange="msddChange('msdd-nuts-imported')"/><div><div class="msdd-option-name">Ginkgo nuts (Raw)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Hickorynuts (Dried)" onchange="msddChange('msdd-nuts-imported')"/><div><div class="msdd-option-name">Hickorynuts (Dried)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Macadamia nuts (Raw)" onchange="msddChange('msdd-nuts-imported')"/><div><div class="msdd-option-name">Macadamia nuts (Raw)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Pecans" onchange="msddChange('msdd-nuts-imported')"/><div><div class="msdd-option-name">Pecans</div></div></label>
+              </div>
+            </div>
+            <div class="msdd-tags" id="msdd-nuts-imported-tags"></div>
+          </div>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Select any imported nuts you eat</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="raisins-section">
+        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Raisins</span><span class="chevron">▾</span></div>
+        <div class="fp-selected-area" id="fp-sel-raisins-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-raisins-section-chips"></div></div>
+        <div class="accordion-body">
+          <div class="sub-label">Choose Raisins</div>
+          <div class="msdd-wrap" id="msdd-raisins">
+            <div class="msdd-panel" id="msdd-raisins-panel">
+              <div class="msdd-list" id="msdd-raisins-list">
+                <label class="msdd-option"><input type="checkbox" value="Black Raisins (Dried)" onchange="msddChange('msdd-raisins')"/><div><div class="msdd-option-name">Black Raisins (Dried)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Golden Raisins (Seedless)" onchange="msddChange('msdd-raisins')"/><div><div class="msdd-option-name">Golden Raisins (Seedless)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Raisins (Seeded)" onchange="msddChange('msdd-raisins')"/><div><div class="msdd-option-name">Raisins (Seeded)</div></div></label>
+              </div>
+            </div>
+            <div class="msdd-tags" id="msdd-raisins-tags"></div>
+          </div>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Select the raisins you eat</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="seeds-section">
+        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Seeds</span><span class="chevron">▾</span></div>
+        <div class="fp-selected-area" id="fp-sel-seeds-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-seeds-section-chips"></div></div>
+        <div class="accordion-body">
+          <div class="sub-label">Choose Seeds</div>
+          <div class="msdd-wrap" id="msdd-seeds">
+            <div class="msdd-panel" id="msdd-seeds-panel">
+              <input type="text" class="msdd-search" placeholder="🔍 Search Seeds…" oninput="filterMsdd('msdd-seeds',this.value)" autocomplete="off"/>
+              <div class="msdd-list" id="msdd-seeds-list">
+                <label class="msdd-option"><input type="checkbox" value="Chia seeds (Dried)" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Chia seeds (Dried)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Flax seeds" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Flax seeds</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Flaxseed (Ground)" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Flaxseed (Ground)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Garden cress (Seeds)" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Garden cress (Seeds)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Gingelly seeds (Black)" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Gingelly seeds (Black)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Gingelly seeds (Brown)" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Gingelly seeds (Brown)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Gingelly seeds (White)" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Gingelly seeds (White)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Hemp seed" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Hemp seed</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Lotus seeds (Dried)" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Lotus seeds (Dried)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Lotus seeds (Raw)" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Lotus seeds (Raw)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Niger seeds" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Niger seeds</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Pine seed" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Pine seed</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Pumpkin seeds" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Pumpkin seeds</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Safflower seeds" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Safflower seeds</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Sunflower seeds" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Sunflower seeds</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Watermelon seed" onchange="msddChange('msdd-seeds')"/><div><div class="msdd-option-name">Watermelon seed</div></div></label>
+              </div>
+            </div>
+            <div class="msdd-tags" id="msdd-seeds-tags"></div>
+          </div>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Seeds provide omega-3s, fiber, and minerals</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="fruits-section">
+        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Fruits</span><span class="chevron">▾</span></div>
+        <div class="fp-selected-area" id="fp-sel-fruits-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-fruits-section-chips"></div></div>
+        <div class="accordion-body">
+          <details class="fp-details">
+            <summary>Indian Common Fruits</summary>
+            <div class="fp-details-body">
+              <div class="fp-subgroup">
+                <div class="sub-label">Citrus fruits</div>
+                <div class="msdd-wrap" id="msdd-fruits-ic-citrus">
+                  <div class="msdd-panel" id="msdd-fruits-ic-citrus-panel">
+                    <div class="msdd-list" id="msdd-fruits-ic-citrus-list">
+                      <label class="msdd-option"><input type="checkbox" value="Lemon juice" onchange="msddChange('msdd-fruits-ic-citrus')"/><div><div class="msdd-option-name">Lemon juice</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Orange" onchange="msddChange('msdd-fruits-ic-citrus')"/><div><div class="msdd-option-name">Orange</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Pummelo" onchange="msddChange('msdd-fruits-ic-citrus')"/><div><div class="msdd-option-name">Pummelo</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Sweet Lime" onchange="msddChange('msdd-fruits-ic-citrus')"/><div><div class="msdd-option-name">Sweet Lime</div></div></label>
+                    </div>
+                  </div>
+                  <div class="msdd-tags" id="msdd-fruits-ic-citrus-tags"></div>
+                </div>
+              </div>
+              <div class="fp-subgroup">
+                <div class="sub-label">Tropical fruits</div>
+                <div class="msdd-wrap" id="msdd-fruits-ic-tropical">
+                  <div class="msdd-panel" id="msdd-fruits-ic-tropical-panel">
+                    <input type="text" class="msdd-search" placeholder="🔍 Search Tropical fruits…" oninput="filterMsdd('msdd-fruits-ic-tropical',this.value)" autocomplete="off"/>
+                    <div class="msdd-list" id="msdd-fruits-ic-tropical-list">
+                      <label class="msdd-option"><input type="checkbox" value="Banana" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Banana</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Coconut Water" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Coconut Water</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Custard apple" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Custard apple</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Dates" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Dates</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Dragon fruit" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Dragon fruit</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Fig" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Fig</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Grapes" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Grapes</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Guava" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Guava</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Jack fruit" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Jack fruit</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Jujube" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Jujube</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Mango" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Mango</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Palm fruit (Tender)" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Palm fruit (Tender)</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Papaya" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Papaya</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Pineapple" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Pineapple</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Pomegranate" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Pomegranate</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Sapota" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Sapota</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Wood Apple" onchange="msddChange('msdd-fruits-ic-tropical')"/><div><div class="msdd-option-name">Wood Apple</div></div></label>
+                    </div>
+                  </div>
+                  <div class="msdd-tags" id="msdd-fruits-ic-tropical-tags"></div>
+                </div>
+              </div>
+              <div class="fp-subgroup">
+                <div class="sub-label">Melons</div>
+                <div class="msdd-wrap" id="msdd-fruits-ic-melons">
+                  <div class="msdd-panel" id="msdd-fruits-ic-melons-panel">
+                    <div class="msdd-list" id="msdd-fruits-ic-melons-list">
+                      <label class="msdd-option"><input type="checkbox" value="Musk melon" onchange="msddChange('msdd-fruits-ic-melons')"/><div><div class="msdd-option-name">Musk melon</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Water melon" onchange="msddChange('msdd-fruits-ic-melons')"/><div><div class="msdd-option-name">Water melon</div></div></label>
+                    </div>
+                  </div>
+                  <div class="msdd-tags" id="msdd-fruits-ic-melons-tags"></div>
+                </div>
+              </div>
+              <div class="fp-subgroup">
+                <div class="sub-label">Pomes</div>
+                <div class="msdd-wrap" id="msdd-fruits-ic-pomes">
+                  <div class="msdd-panel" id="msdd-fruits-ic-pomes-panel">
+                    <div class="msdd-list" id="msdd-fruits-ic-pomes-list">
+                      <label class="msdd-option"><input type="checkbox" value="Apple" onchange="msddChange('msdd-fruits-ic-pomes')"/><div><div class="msdd-option-name">Apple</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Green apple" onchange="msddChange('msdd-fruits-ic-pomes')"/><div><div class="msdd-option-name">Green apple</div></div></label>
+                    </div>
+                  </div>
+                  <div class="msdd-tags" id="msdd-fruits-ic-pomes-tags"></div>
+                </div>
+              </div>
+              <div class="fp-subgroup">
+                <div class="sub-label">Berries</div>
+                <div class="msdd-wrap" id="msdd-fruits-ic-berries">
+                  <div class="msdd-panel" id="msdd-fruits-ic-berries-panel">
+                    <div class="msdd-list" id="msdd-fruits-ic-berries-list">
+                      <label class="msdd-option"><input type="checkbox" value="Gooseberry" onchange="msddChange('msdd-fruits-ic-berries')"/><div><div class="msdd-option-name">Gooseberry</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Java-plum" onchange="msddChange('msdd-fruits-ic-berries')"/><div><div class="msdd-option-name">Java-plum</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Strawberry" onchange="msddChange('msdd-fruits-ic-berries')"/><div><div class="msdd-option-name">Strawberry</div></div></label>
+                    </div>
+                  </div>
+                  <div class="msdd-tags" id="msdd-fruits-ic-berries-tags"></div>
+                </div>
+              </div>
+            </div>
+          </details>
+          <details class="fp-details">
+            <summary>Indian Other Fruits</summary>
+            <div class="fp-details-body">
+              <div class="fp-subgroup">
+                <div class="sub-label">Citrus fruits</div>
+                <div class="msdd-wrap" id="msdd-fruits-io-citrus">
+                  <div class="msdd-panel" id="msdd-fruits-io-citrus-panel">
+                    <div class="msdd-list" id="msdd-fruits-io-citrus-list">
+                      <label class="msdd-option"><input type="checkbox" value="Grapefruit" onchange="msddChange('msdd-fruits-io-citrus')"/><div><div class="msdd-option-name">Grapefruit</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Navel Orange" onchange="msddChange('msdd-fruits-io-citrus')"/><div><div class="msdd-option-name">Navel Orange</div></div></label>
+                    </div>
+                  </div>
+                  <div class="msdd-tags" id="msdd-fruits-io-citrus-tags"></div>
+                </div>
+              </div>
+              <div class="fp-subgroup">
+                <div class="sub-label">Tropical fruits</div>
+                <div class="msdd-wrap" id="msdd-fruits-io-tropical">
+                  <div class="msdd-panel" id="msdd-fruits-io-tropical-panel">
+                    <div class="msdd-list" id="msdd-fruits-io-tropical-list">
+                      <label class="msdd-option"><input type="checkbox" value="Avocado fruit" onchange="msddChange('msdd-fruits-io-tropical')"/><div><div class="msdd-option-name">Avocado fruit</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Bael fruit" onchange="msddChange('msdd-fruits-io-tropical')"/><div><div class="msdd-option-name">Bael fruit</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Cashew apple" onchange="msddChange('msdd-fruits-io-tropical')"/><div><div class="msdd-option-name">Cashew apple</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Kadamba Fruit" onchange="msddChange('msdd-fruits-io-tropical')"/><div><div class="msdd-option-name">Kadamba Fruit</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Mangosteen" onchange="msddChange('msdd-fruits-io-tropical')"/><div><div class="msdd-option-name">Mangosteen</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Manila tamarind" onchange="msddChange('msdd-fruits-io-tropical')"/><div><div class="msdd-option-name">Manila tamarind</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Persimmon fruit" onchange="msddChange('msdd-fruits-io-tropical')"/><div><div class="msdd-option-name">Persimmon fruit</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Rambutan" onchange="msddChange('msdd-fruits-io-tropical')"/><div><div class="msdd-option-name">Rambutan</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Soursop" onchange="msddChange('msdd-fruits-io-tropical')"/><div><div class="msdd-option-name">Soursop</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Tamarind" onchange="msddChange('msdd-fruits-io-tropical')"/><div><div class="msdd-option-name">Tamarind</div></div></label>
+                    </div>
+                  </div>
+                  <div class="msdd-tags" id="msdd-fruits-io-tropical-tags"></div>
+                </div>
+              </div>
+              <div class="fp-subgroup">
+                <div class="sub-label">Berries</div>
+                <div class="msdd-wrap" id="msdd-fruits-io-berries">
+                  <div class="msdd-panel" id="msdd-fruits-io-berries-panel">
+                    <div class="msdd-list" id="msdd-fruits-io-berries-list">
+                      <label class="msdd-option"><input type="checkbox" value="Karonda fruit" onchange="msddChange('msdd-fruits-io-berries')"/><div><div class="msdd-option-name">Karonda fruit</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Phalsa" onchange="msddChange('msdd-fruits-io-berries')"/><div><div class="msdd-option-name">Phalsa</div></div></label>
+                    </div>
+                  </div>
+                  <div class="msdd-tags" id="msdd-fruits-io-berries-tags"></div>
+                </div>
+              </div>
+              <div class="fp-subgroup">
+                <div class="sub-label">Stone fruits</div>
+                <div class="msdd-wrap" id="msdd-fruits-io-stone">
+                  <div class="msdd-panel" id="msdd-fruits-io-stone-panel">
+                    <div class="msdd-list" id="msdd-fruits-io-stone-list">
+                      <label class="msdd-option"><input type="checkbox" value="Apricot (Dried)" onchange="msddChange('msdd-fruits-io-stone')"/><div><div class="msdd-option-name">Apricot (Dried)</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Cherries" onchange="msddChange('msdd-fruits-io-stone')"/><div><div class="msdd-option-name">Cherries</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Olive Fruit" onchange="msddChange('msdd-fruits-io-stone')"/><div><div class="msdd-option-name">Olive Fruit</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Peaches" onchange="msddChange('msdd-fruits-io-stone')"/><div><div class="msdd-option-name">Peaches</div></div></label>
+                    </div>
+                  </div>
+                  <div class="msdd-tags" id="msdd-fruits-io-stone-tags"></div>
+                </div>
+              </div>
+            </div>
+          </details>
+          <details class="fp-details">
+            <summary>Imported Fruits</summary>
+            <div class="fp-details-body">
+              <div class="fp-subgroup">
+                <div class="sub-label">Citrus fruits</div>
+                <div class="msdd-wrap" id="msdd-fruits-im-citrus">
+                  <div class="msdd-panel" id="msdd-fruits-im-citrus-panel">
+                    <div class="msdd-list" id="msdd-fruits-im-citrus-list">
+                      <label class="msdd-option"><input type="checkbox" value="Kumquat" onchange="msddChange('msdd-fruits-im-citrus')"/><div><div class="msdd-option-name">Kumquat</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Tangerine" onchange="msddChange('msdd-fruits-im-citrus')"/><div><div class="msdd-option-name">Tangerine</div></div></label>
+                    </div>
+                  </div>
+                  <div class="msdd-tags" id="msdd-fruits-im-citrus-tags"></div>
+                </div>
+              </div>
+              <div class="fp-subgroup">
+                <div class="sub-label">Tropical fruits</div>
+                <div class="msdd-wrap" id="msdd-fruits-im-tropical">
+                  <div class="msdd-panel" id="msdd-fruits-im-tropical-panel">
+                    <div class="msdd-list" id="msdd-fruits-im-tropical-list">
+                      <label class="msdd-option"><input type="checkbox" value="Cherimoya" onchange="msddChange('msdd-fruits-im-tropical')"/><div><div class="msdd-option-name">Cherimoya</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Durian" onchange="msddChange('msdd-fruits-im-tropical')"/><div><div class="msdd-option-name">Durian</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Kiwano" onchange="msddChange('msdd-fruits-im-tropical')"/><div><div class="msdd-option-name">Kiwano</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Litchi" onchange="msddChange('msdd-fruits-im-tropical')"/><div><div class="msdd-option-name">Litchi</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Longans" onchange="msddChange('msdd-fruits-im-tropical')"/><div><div class="msdd-option-name">Longans</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Mamey sapote" onchange="msddChange('msdd-fruits-im-tropical')"/><div><div class="msdd-option-name">Mamey sapote</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Passion fruit" onchange="msddChange('msdd-fruits-im-tropical')"/><div><div class="msdd-option-name">Passion fruit</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Prickly pear" onchange="msddChange('msdd-fruits-im-tropical')"/><div><div class="msdd-option-name">Prickly pear</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Snake fruit" onchange="msddChange('msdd-fruits-im-tropical')"/><div><div class="msdd-option-name">Snake fruit</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Star fruit" onchange="msddChange('msdd-fruits-im-tropical')"/><div><div class="msdd-option-name">Star fruit</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Tamarillo" onchange="msddChange('msdd-fruits-im-tropical')"/><div><div class="msdd-option-name">Tamarillo</div></div></label>
+                    </div>
+                  </div>
+                  <div class="msdd-tags" id="msdd-fruits-im-tropical-tags"></div>
+                </div>
+              </div>
+              <div class="fp-subgroup">
+                <div class="sub-label">Pomes</div>
+                <div class="msdd-wrap" id="msdd-fruits-im-pomes">
+                  <div class="msdd-panel" id="msdd-fruits-im-pomes-panel">
+                    <div class="msdd-list" id="msdd-fruits-im-pomes-list">
+                      <label class="msdd-option"><input type="checkbox" value="Loquat fruit" onchange="msddChange('msdd-fruits-im-pomes')"/><div><div class="msdd-option-name">Loquat fruit</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Pear" onchange="msddChange('msdd-fruits-im-pomes')"/><div><div class="msdd-option-name">Pear</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Quince fruit" onchange="msddChange('msdd-fruits-im-pomes')"/><div><div class="msdd-option-name">Quince fruit</div></div></label>
+                    </div>
+                  </div>
+                  <div class="msdd-tags" id="msdd-fruits-im-pomes-tags"></div>
+                </div>
+              </div>
+              <div class="fp-subgroup">
+                <div class="sub-label">Berries</div>
+                <div class="msdd-wrap" id="msdd-fruits-im-berries">
+                  <div class="msdd-panel" id="msdd-fruits-im-berries-panel">
+                    <div class="msdd-list" id="msdd-fruits-im-berries-list">
+                      <label class="msdd-option"><input type="checkbox" value="Black berry" onchange="msddChange('msdd-fruits-im-berries')"/><div><div class="msdd-option-name">Black berry</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Blueberries" onchange="msddChange('msdd-fruits-im-berries')"/><div><div class="msdd-option-name">Blueberries</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Cranberries" onchange="msddChange('msdd-fruits-im-berries')"/><div><div class="msdd-option-name">Cranberries</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Currants" onchange="msddChange('msdd-fruits-im-berries')"/><div><div class="msdd-option-name">Currants</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Elderberry" onchange="msddChange('msdd-fruits-im-berries')"/><div><div class="msdd-option-name">Elderberry</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Goji berry dried" onchange="msddChange('msdd-fruits-im-berries')"/><div><div class="msdd-option-name">Goji berry dried</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Kiwi fruit" onchange="msddChange('msdd-fruits-im-berries')"/><div><div class="msdd-option-name">Kiwi fruit</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Mulberries" onchange="msddChange('msdd-fruits-im-berries')"/><div><div class="msdd-option-name">Mulberries</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Raspberry" onchange="msddChange('msdd-fruits-im-berries')"/><div><div class="msdd-option-name">Raspberry</div></div></label>
+                    </div>
+                  </div>
+                  <div class="msdd-tags" id="msdd-fruits-im-berries-tags"></div>
+                </div>
+              </div>
+              <div class="fp-subgroup">
+                <div class="sub-label">Stone fruits</div>
+                <div class="msdd-wrap" id="msdd-fruits-im-stone">
+                  <div class="msdd-panel" id="msdd-fruits-im-stone-panel">
+                    <div class="msdd-list" id="msdd-fruits-im-stone-list">
+                      <label class="msdd-option"><input type="checkbox" value="Nectarine" onchange="msddChange('msdd-fruits-im-stone')"/><div><div class="msdd-option-name">Nectarine</div></div></label>
+                      <label class="msdd-option"><input type="checkbox" value="Plum" onchange="msddChange('msdd-fruits-im-stone')"/><div><div class="msdd-option-name">Plum</div></div></label>
+                    </div>
+                  </div>
+                  <div class="msdd-tags" id="msdd-fruits-im-stone-tags"></div>
+                </div>
+              </div>
+            </div>
+          </details>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Select fruits you enjoy — they will be included in your daily plan</div>
         </div>
       </div>
 
       <div class="accordion-item" id="breakfast-section">
-        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Main Breakfast</span><span class="chevron">▾</span></div>
+        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Breakfast</span><span class="chevron">▾</span></div>
         <div class="fp-selected-area" id="fp-sel-breakfast-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-breakfast-section-chips"></div></div>
         <div class="accordion-body">
-          <div class="sub-label">Choose Breakfast from the dropdown</div>
+          <div class="sub-label">Choose Breakfast</div>
           <div class="msdd-wrap" id="msdd-breakfast">
             <div class="msdd-panel" id="msdd-breakfast-panel">
-              <!-- <input type="text" class="msdd-search" placeholder="🔍 Search breakfast…" oninput="filterMsdd('msdd-breakfast',this.value)" autocomplete="off"/> -->
+              <input type="text" class="msdd-search" placeholder="🔍 Search Breakfast…" oninput="filterMsdd('msdd-breakfast',this.value)" autocomplete="off"/>
               <div class="msdd-list" id="msdd-breakfast-list">
+                <label class="msdd-option"><input type="checkbox" value="Bread Omlette" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Bread Omlette</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Chapathi" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Chapathi</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Daddojanam" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Daddojanam</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Dibba rotti" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Dibba rotti</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Dosa" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Dosa</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Egg Dosa" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Egg Dosa</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Idly" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Idly</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Masala Khichdi" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Masala Khichdi</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Masala Wada" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Masala Wada</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Mysore Bonda" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Mysore Bonda</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Oats Dosa" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Oats Dosa</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Oats Upma" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Oats Upma</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Onion Dosa" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Onion Dosa</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Perugu vada" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Perugu vada</div></div></label>
                 <label class="msdd-option"><input type="checkbox" value="Pesarattu" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Pesarattu</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Upma" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Upma</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Wada" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Wada</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Semiya Upma" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Semiya Upma</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Chapati" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Chapati</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Poha" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Poha</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Poha Idly" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Poha Idly</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Pongal" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Pongal</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Ponganalu" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Ponganalu</div></div></label>
                 <label class="msdd-option"><input type="checkbox" value="Poori" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Poori</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Idli" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Idli</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Plain Dosa" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Plain Dosa</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Pulihora" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Pulihora</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Paramannam" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Paramannam</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Ragi Idly" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Ragi Idly</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Ragi Upma" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Ragi Upma</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Rava uttapam" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Rava uttapam</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Semiya Pulihora" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Semiya Pulihora</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Semiya Upma" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Semiya Upma</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Upma" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Upma</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Uttapam" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Uttapam</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Uggani" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Uggani</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Wada" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Wada</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Wheat Rava Upma" onchange="msddChange('msdd-breakfast')"/><div><div class="msdd-option-name">Wheat Rava Upma</div></div></label>
               </div>
             </div>
             <div class="msdd-tags" id="msdd-breakfast-tags"></div>
           </div>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Choose your usual breakfast items</div>
         </div>
       </div>
 
@@ -3658,37 +4024,234 @@
           <div class="sub-label">Choose Chutneys</div>
           <div class="msdd-wrap" id="msdd-chutney">
             <div class="msdd-panel" id="msdd-chutney-panel">
-              <!-- <input type="text" class="msdd-search" placeholder="🔍 Search chutney…" oninput="filterMsdd('msdd-chutney',this.value)" autocomplete="off"/> -->
               <div class="msdd-list" id="msdd-chutney-list">
-                <label class="msdd-option"><input type="checkbox" value="Peanut Chutney" onchange="msddChange('msdd-chutney')"/><div><div class="msdd-option-name">Peanut Chutney</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Ginger Chutney" onchange="msddChange('msdd-chutney')"/><div><div class="msdd-option-name">Ginger Chutney</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Potato Sagu" onchange="msddChange('msdd-chutney')"/><div><div class="msdd-option-name">Potato Sagu</div></div></label>
                 <label class="msdd-option"><input type="checkbox" value="Bombay Chutney" onchange="msddChange('msdd-chutney')"/><div><div class="msdd-option-name">Bombay Chutney</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Coconut chutney" onchange="msddChange('msdd-chutney')"/><div><div class="msdd-option-name">Coconut chutney</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Coriander coconut chutney" onchange="msddChange('msdd-chutney')"/><div><div class="msdd-option-name">Coriander coconut chutney</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Ginger chutney" onchange="msddChange('msdd-chutney')"/><div><div class="msdd-option-name">Ginger chutney</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Mint Chutney" onchange="msddChange('msdd-chutney')"/><div><div class="msdd-option-name">Mint Chutney</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Peanut Chutney" onchange="msddChange('msdd-chutney')"/><div><div class="msdd-option-name">Peanut Chutney</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Potato sagu" onchange="msddChange('msdd-chutney')"/><div><div class="msdd-option-name">Potato sagu</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Putnala chutney" onchange="msddChange('msdd-chutney')"/><div><div class="msdd-option-name">Putnala chutney</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Raw mango green chilli" onchange="msddChange('msdd-chutney')"/><div><div class="msdd-option-name">Raw mango green chilli</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Red coconut chutney" onchange="msddChange('msdd-chutney')"/><div><div class="msdd-option-name">Red coconut chutney</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Tomato Chutney" onchange="msddChange('msdd-chutney')"/><div><div class="msdd-option-name">Tomato Chutney</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Tomato mint" onchange="msddChange('msdd-chutney')"/><div><div class="msdd-option-name">Tomato mint</div></div></label>
               </div>
             </div>
             <div class="msdd-tags" id="msdd-chutney-tags"></div>
           </div>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Select the chutneys you like</div>
         </div>
       </div>
 
-      <div class="accordion-item" id="powders-section">
-        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Powders</span><span class="chevron">▾</span></div>
-        <div class="fp-selected-area" id="fp-sel-powders-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-powders-section-chips"></div></div>
+      <div class="accordion-item" id="rice-section">
+        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Rice/Roti</span><span class="chevron">▾</span></div>
+        <div class="fp-selected-area" id="fp-sel-rice-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-rice-section-chips"></div></div>
         <div class="accordion-body">
-          <div class="sub-label">Choose Powders from the dropdown</div>
-          <div class="msdd-wrap" id="msdd-powders">
-            <div class="msdd-panel" id="msdd-powders-panel">
-              <!-- <input type="text" class="msdd-search" placeholder="🔍 Search powders…" oninput="filterMsdd('msdd-powders',this.value)" autocomplete="off"/> -->
-              <div class="msdd-list" id="msdd-powders-list">
-                <label class="msdd-option"><input type="checkbox" value="Flax Seeds Idli Podi" onchange="msddChange('msdd-powders')"/><div><div class="msdd-option-name">Flax Seeds Idli Podi</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Garlic Podi" onchange="msddChange('msdd-powders')"/><div><div class="msdd-option-name">Garlic Podi</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Dosa Podi" onchange="msddChange('msdd-powders')"/><div><div class="msdd-option-name">Dosa Podi</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Karivepaku Podi" onchange="msddChange('msdd-powders')"/><div><div class="msdd-option-name">Karivepaku Podi</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Ghee" onchange="msddChange('msdd-powders')"/><div><div class="msdd-option-name">Ghee</div></div></label>
+          <div class="sub-label">Choose Rice/Roti</div>
+          <div class="msdd-wrap" id="msdd-rice">
+            <div class="msdd-panel" id="msdd-rice-panel">
+              <div class="msdd-list" id="msdd-rice-list">
+                <label class="msdd-option"><input type="checkbox" value="White Rice" onchange="msddChange('msdd-rice')"/><div><div class="msdd-option-name">White Rice</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Brown Rice" onchange="msddChange('msdd-rice')"/><div><div class="msdd-option-name">Brown Rice</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Basmati Rice" onchange="msddChange('msdd-rice')"/><div><div class="msdd-option-name">Basmati Rice</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Rotis" onchange="msddChange('msdd-rice')"/><div><div class="msdd-option-name">Rotis</div></div></label>
               </div>
             </div>
-            <div class="msdd-tags" id="msdd-powders-tags"></div>
+            <div class="msdd-tags" id="msdd-rice-tags"></div>
           </div>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Select the rice and roti you eat</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="millets-section">
+        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Millets</span><span class="chevron">▾</span></div>
+        <div class="fp-selected-area" id="fp-sel-millets-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-millets-section-chips"></div></div>
+        <div class="accordion-body">
+          <div class="sub-label">Choose Millets</div>
+          <div class="msdd-wrap" id="msdd-millets">
+            <div class="msdd-panel" id="msdd-millets-panel">
+              <div class="msdd-list" id="msdd-millets-list">
+                <label class="msdd-option"><input type="checkbox" value="Bajra" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Bajra</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Barnyard Millet" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Barnyard Millet</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Fonio" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Fonio</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Foxtail Millet" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Foxtail Millet</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Japanese Millet" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Japanese Millet</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Jowar" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Jowar</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Proso Millet" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Proso Millet</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Ragi" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Ragi</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Samai" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Samai</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Varagu" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Varagu</div></div></label>
+              </div>
+            </div>
+            <div class="msdd-tags" id="msdd-millets-tags"></div>
+          </div>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Millets are rich in fiber and minerals</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="dairy-section">
+        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Dairy</span><span class="chevron">▾</span></div>
+        <div class="fp-selected-area" id="fp-sel-dairy-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-dairy-section-chips"></div></div>
+        <div class="accordion-body">
+          <div class="sub-label">Choose Dairy</div>
+          <div class="msdd-wrap" id="msdd-dairy">
+            <div class="msdd-panel" id="msdd-dairy-panel">
+              <div class="msdd-list" id="msdd-dairy-list">
+                <label class="msdd-option"><input type="checkbox" value="Buffalo milk" onchange="msddChange('msdd-dairy')"/><div><div class="msdd-option-name">Buffalo milk</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Butter" onchange="msddChange('msdd-dairy')"/><div><div class="msdd-option-name">Butter</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Cheddar Cheese" onchange="msddChange('msdd-dairy')"/><div><div class="msdd-option-name">Cheddar Cheese</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Cow milk" onchange="msddChange('msdd-dairy')"/><div><div class="msdd-option-name">Cow milk</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Curd" onchange="msddChange('msdd-dairy')"/><div><div class="msdd-option-name">Curd</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Ghee" onchange="msddChange('msdd-dairy')"/><div><div class="msdd-option-name">Ghee</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Khoa" onchange="msddChange('msdd-dairy')"/><div><div class="msdd-option-name">Khoa</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Mozzarella Cheese" onchange="msddChange('msdd-dairy')"/><div><div class="msdd-option-name">Mozzarella Cheese</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Paneer" onchange="msddChange('msdd-dairy')"/><div><div class="msdd-option-name">Paneer</div></div></label>
+              </div>
+            </div>
+            <div class="msdd-tags" id="msdd-dairy-tags"></div>
+          </div>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Select the dairy items you consume</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="leafy-section">
+        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Leafy vegetables</span><span class="chevron">▾</span></div>
+        <div class="fp-selected-area" id="fp-sel-leafy-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-leafy-section-chips"></div></div>
+        <div class="accordion-body">
+          <div class="sub-label">Choose Leafy Vegetables</div>
+          <div class="msdd-wrap" id="msdd-leafy">
+            <div class="msdd-panel" id="msdd-leafy-panel">
+              <input type="text" class="msdd-search" placeholder="🔍 Search Leafy vegetables…" oninput="filterMsdd('msdd-leafy',this.value)" autocomplete="off"/>
+              <div class="msdd-list" id="msdd-leafy-list">
+                <label class="msdd-option"><input type="checkbox" value="Amaranth Greens" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Amaranth Greens</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Gogu leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Gogu leaves</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Fenugreek leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Fenugreek leaves</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Spinach" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Spinach</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Green Amaranth or Indian spinach or Sessile Joyweed or Ponnaganni" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Green Amaranth or Indian spinach or Sessile Joyweed or Ponnaganni</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Rumex leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Rumex leaves</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Basella (Vine or Malabar spinach)" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Basella (Vine or Malabar spinach)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Tamarind tender leaf shoots" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Tamarind tender leaf shoots</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Moringa leaves or Drumstick leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Moringa leaves or Drumstick leaves</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Cabbage (Green)" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Cabbage (Green)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Mint leaves or Peppermint" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Mint leaves or Peppermint</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Coriander leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Coriander leaves</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Curry leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Curry leaves</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Basil (Fresh)" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Basil (Fresh)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Onions" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Onions</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Purslane" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Purslane</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Lettuce" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Lettuce</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Agathi leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Agathi leaves</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Brussels sprouts" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Brussels sprouts</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Beet greens" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Beet greens</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Betel leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Betel leaves</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Colocasia leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Colocasia leaves</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Cauliflower leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Cauliflower leaves</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Grapes Leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Grapes Leaves</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Garden cress" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Garden cress</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Mustard greens" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Mustard greens</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Pumpkin leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Pumpkin leaves</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Radish leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Radish leaves</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Bathua leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Bathua leaves</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Bok choy or Pak Choi leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Bok choy or Pak Choi leaves</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Cabbage (Chinese)" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Cabbage (Chinese)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Jute" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Jute</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Knol-Khol (Leaves)" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Knol-Khol (Leaves)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Parsley" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Parsley</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Sweet potato leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Sweet potato leaves</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Stinging Nettles" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Stinging Nettles</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Winged bean leaves" onchange="msddChange('msdd-leafy')"/><div><div class="msdd-option-name">Winged bean leaves</div></div></label>
+              </div>
+            </div>
+            <div class="msdd-tags" id="msdd-leafy-tags"></div>
+          </div>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Choose the leafy vegetables you like — we will build your meals around these</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="veggies-section">
+        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Vegetables</span><span class="chevron">▾</span></div>
+        <div class="fp-selected-area" id="fp-sel-veggies-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-veggies-section-chips"></div></div>
+        <div class="accordion-body">
+          <div class="sub-label">Choose Vegetables</div>
+          <div class="msdd-wrap" id="msdd-veggies">
+            <div class="msdd-panel" id="msdd-veggies-panel">
+              <input type="text" class="msdd-search" placeholder="🔍 Search Vegetables…" oninput="filterMsdd('msdd-veggies',this.value)" autocomplete="off"/>
+              <div class="msdd-list" id="msdd-veggies-list">
+                <label class="msdd-option"><input type="checkbox" value="Tomato" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Tomato</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Ridge gourd" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Ridge gourd</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Brinjal - all varieties" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Brinjal - all varieties</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Drumstick" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Drumstick</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Ladies finger" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Ladies finger</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Ivy gourd" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Ivy gourd</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Plantain" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Plantain</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Bottle gourd" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Bottle gourd</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Cauliflower" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Cauliflower</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Bitter gourd" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Bitter gourd</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="French beans" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">French beans</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Cucumber" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Cucumber</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Snake gourd" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Snake gourd</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Mango (Green raw)" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Mango (Green raw)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Pumpkin" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Pumpkin</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Ash gourd" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Ash gourd</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Corn (Baby)" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Corn (Baby)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Papaya raw" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Papaya raw</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Corn (Sweet)" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Corn (Sweet)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Jack fruit (Raw)" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Jack fruit (Raw)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Red gram" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Red gram</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Broad beans" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Broad beans</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Cluster beans" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Cluster beans</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Peas" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Peas</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Broccoli" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Broccoli</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Colocasia (Stem)" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Colocasia (Stem)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Peas (Green)" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Peas (Green)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Cho-cho-marrow" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Cho-cho-marrow</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Pointed Gourd" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Pointed Gourd</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Plantain (Flower)" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Plantain (Flower)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Pumpkin flowers" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Pumpkin flowers</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Tinda" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Tinda</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Zucchini" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Zucchini</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Yardlong bean" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Yardlong bean</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Winged beans" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Winged beans</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Lima beans (Immature)" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Lima beans (Immature)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Lima beans (mature)" onchange="msddChange('msdd-veggies')"/><div><div class="msdd-option-name">Lima beans (mature)</div></div></label>
+              </div>
+            </div>
+            <div class="msdd-tags" id="msdd-veggies-tags"></div>
+          </div>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Choose vegetables you like — we will build your meals around these</div>
+        </div>
+      </div>
+
+      <div class="accordion-item" id="roots-section">
+        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Roots &amp; Tubers</span><span class="chevron">▾</span></div>
+        <div class="fp-selected-area" id="fp-sel-roots-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-roots-section-chips"></div></div>
+        <div class="accordion-body">
+          <div class="sub-label">Choose Roots &amp; Tubers</div>
+          <div class="msdd-wrap" id="msdd-roots">
+            <div class="msdd-panel" id="msdd-roots-panel">
+              <input type="text" class="msdd-search" placeholder="🔍 Search Roots &amp; Tubers…" oninput="filterMsdd('msdd-roots',this.value)" autocomplete="off"/>
+              <div class="msdd-list" id="msdd-roots-list">
+                <label class="msdd-option"><input type="checkbox" value="Potato" onchange="msddChange('msdd-roots')"/><div><div class="msdd-option-name">Potato</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Carrot" onchange="msddChange('msdd-roots')"/><div><div class="msdd-option-name">Carrot</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Beet root" onchange="msddChange('msdd-roots')"/><div><div class="msdd-option-name">Beet root</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Colocasia" onchange="msddChange('msdd-roots')"/><div><div class="msdd-option-name">Colocasia</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Sweet potato" onchange="msddChange('msdd-roots')"/><div><div class="msdd-option-name">Sweet potato</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Radish" onchange="msddChange('msdd-roots')"/><div><div class="msdd-option-name">Radish</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Yam" onchange="msddChange('msdd-roots')"/><div><div class="msdd-option-name">Yam</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Tapioca" onchange="msddChange('msdd-roots')"/><div><div class="msdd-option-name">Tapioca</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Plantain (Stem)" onchange="msddChange('msdd-roots')"/><div><div class="msdd-option-name">Plantain (Stem)</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Knol - Khol" onchange="msddChange('msdd-roots')"/><div><div class="msdd-option-name">Knol - Khol</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Lotus root" onchange="msddChange('msdd-roots')"/><div><div class="msdd-option-name">Lotus root</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Turnips" onchange="msddChange('msdd-roots')"/><div><div class="msdd-option-name">Turnips</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Yambean" onchange="msddChange('msdd-roots')"/><div><div class="msdd-option-name">Yambean</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Waterchestnuts" onchange="msddChange('msdd-roots')"/><div><div class="msdd-option-name">Waterchestnuts</div></div></label>
+              </div>
+            </div>
+            <div class="msdd-tags" id="msdd-roots-tags"></div>
+          </div>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Select the roots and tubers you eat</div>
         </div>
       </div>
 
@@ -3699,74 +4262,25 @@
           <div class="sub-label">Choose Non veg items from the dropdown</div>
           <div class="msdd-wrap" id="msdd-nonveg">
             <div class="msdd-panel" id="msdd-nonveg-panel">
-              <!-- <input type="text" class="msdd-search" placeholder="🔍 Search non-veg…" oninput="filterMsdd('msdd-nonveg',this.value)" autocomplete="off"/> -->
               <div class="msdd-list" id="msdd-nonveg-list">
                 <label class="msdd-option"><input type="checkbox" value="Egg" onchange="msddChange('msdd-nonveg')"/><div><div class="msdd-option-name">Egg</div></div></label>
                 <label class="msdd-option"><input type="checkbox" value="Chicken" onchange="msddChange('msdd-nonveg')"/><div><div class="msdd-option-name">Chicken</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Mutton" onchange="msddChange('msdd-nonveg')"/><div><div class="msdd-option-name">Mutton</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Prawns" onchange="msddChange('msdd-nonveg')"/><div><div class="msdd-option-name">Prawns</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Fish" onchange="msddChange('msdd-nonveg')"/><div><div class="msdd-option-name">Fish</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Crab" onchange="msddChange('msdd-nonveg')"/><div><div class="msdd-option-name">Crab</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Country Hen" onchange="msddChange('msdd-nonveg')"/><div><div class="msdd-option-name">Country Hen</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Goat" onchange="msddChange('msdd-nonveg')"/><div><div class="msdd-option-name">Goat</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Sheep" onchange="msddChange('msdd-nonveg')"/><div><div class="msdd-option-name">Sheep</div></div></label>
                 <label class="msdd-option"><input type="checkbox" value="Pork" onchange="msddChange('msdd-nonveg')"/><div><div class="msdd-option-name">Pork</div></div></label>
                 <label class="msdd-option"><input type="checkbox" value="Beef" onchange="msddChange('msdd-nonveg')"/><div><div class="msdd-option-name">Beef</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Fish" onchange="msddChange('msdd-nonveg')"/><div><div class="msdd-option-name">Fish</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Prawns" onchange="msddChange('msdd-nonveg')"/><div><div class="msdd-option-name">Prawns</div></div></label>
+                <label class="msdd-option"><input type="checkbox" value="Crab" onchange="msddChange('msdd-nonveg')"/><div><div class="msdd-option-name">Crab</div></div></label>
               </div>
             </div>
             <div class="msdd-tags" id="msdd-nonveg-tags"></div>
           </div>
+          <div class="time-chip-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Choose Non veg items</div>
         </div>
       </div>
 
-      <div class="accordion-item" id="rice-section">
-        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Rice</span><span class="chevron">▾</span></div>
-        <div class="fp-selected-area" id="fp-sel-rice-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-rice-section-chips"></div></div>
-        <div class="accordion-body">
-          <div class="sub-label">Choose Rice</div>
-          <div class="msdd-wrap" id="msdd-rice">
-            <div class="msdd-panel" id="msdd-rice-panel">
-              <!-- <input type="text" class="msdd-search" placeholder="🔍 Search rice…" oninput="filterMsdd('msdd-rice',this.value)" autocomplete="off"/> -->
-              <div class="msdd-list" id="msdd-rice-list">
-                <label class="msdd-option"><input type="checkbox" value="White Rice" onchange="msddChange('msdd-rice')"/><div><div class="msdd-option-name">White Rice</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Brown Rice" onchange="msddChange('msdd-rice')"/><div><div class="msdd-option-name">Brown Rice</div></div></label>
-              </div>
-            </div>
-            <div class="msdd-tags" id="msdd-rice-tags"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="accordion-item" id="millets-section">
-        <div class="accordion-header" onclick="toggleAccordion(this)"><span>Millets / Grains</span><span class="chevron">▾</span></div>
-        <div class="fp-selected-area" id="fp-sel-millets-section"><div class="fp-selected-label">Selected Items</div><div class="fp-selected-chips" id="fp-sel-millets-section-chips"></div></div>
-        <div class="accordion-body">
-          <div class="sub-label">Choose Millets / Grains</div>
-          <div class="msdd-wrap" id="msdd-millets">
-            <div class="msdd-panel" id="msdd-millets-panel">
-              <!-- <input type="text" class="msdd-search" placeholder="🔍 Search millets…" oninput="filterMsdd('msdd-millets',this.value)" autocomplete="off"/> -->
-              <div class="msdd-list" id="msdd-millets-list">
-                <label class="msdd-option"><input type="checkbox" value="Egg Paratha" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Egg Paratha</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Paneer Paratha" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Paneer Paratha</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Chapati" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Chapati</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Mix Veg Paratha" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Mix Veg Paratha</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Multi Grain Roti" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Multi Grain Roti</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Ragi Roti" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Ragi Roti</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Aloo Paratha" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Aloo Paratha</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Rice Flour Roti" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Rice Flour Roti</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Dalia (Wheat Rava)" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Dalia (Wheat Rava)</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Quinoa" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Quinoa</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Kodo Millets" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Kodo Millets</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Pearl Millet (Bajra)" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Pearl Millet (Bajra)</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Finger Millet (Ragi)" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Finger Millet (Ragi)</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Foxtail Millet" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Foxtail Millet</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Sorghum (Jowar)" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Sorghum (Jowar)</div></div></label>
-                <label class="msdd-option"><input type="checkbox" value="Proso Millet" onchange="msddChange('msdd-millets')"/><div><div class="msdd-option-name">Proso Millet</div></div></label>
-              </div>
-            </div>
-            <div class="msdd-tags" id="msdd-millets-tags"></div>
-          </div>
-        </div>
-      </div>
-
-   
       <!-- <div class="step-label" style="margin-bottom:8px;">Step 3 · Dislikes</div>
       <div class="section-title" style="margin-bottom:10px;">Food Dislikes</div>
       <div class="form-group"><label>Foods You Dislike or Avoid <span style="font-family:'DM Sans'; font-size:13px; color:var(--muted); font-weight:400;">(optional)</span></label><textarea id="inp-dislikes" placeholder="e.g. Bitter gourd, Mushrooms, Raw onion..."></textarea></div> -->
@@ -4900,6 +5414,26 @@ const FOOD_DIETARY_DATA = {
   ]
 };
 
+// Newer food names → the FOOD_DIETARY_DATA entry that applies to them
+const FOOD_DIETARY_ALIASES = {
+  "Almond": "Almonds",
+  "Cashew nut": "Cashews",
+  "Chia seeds (Dried)": "Chia Seeds",
+  "Flax seeds": "Flaxseeds",
+  "Flaxseed (Ground)": "Flaxseeds",
+  "Soybean sprouts": "Soybean Sprouts",
+  "Kidney bean sprouts": "Kidney Bean Sprouts",
+  "Beet root": "Beetroot",
+  "Navel Orange": "Orange",
+  "Milk (Cow)": "Milk",
+  "Milk (Buffalo)": "Milk",
+  "Cow milk": "Milk",
+  "Buffalo milk": "Milk",
+  "Warm Water with Ghee": "Ghee",
+  "Goat": "Mutton",
+  "Sheep": "Mutton"
+};
+
 // ── Build the LIMIT / AVOID panel markup for one food ──
 function buildDietaryPanelHTML(entries) {
   const limitItems = entries.filter(e => e.action === 'limit');
@@ -4953,7 +5487,7 @@ function initDietaryConsiderations() {
   document.querySelectorAll('.msdd-option').forEach(label => {
     const checkbox = label.querySelector('input[type="checkbox"]');
     if (!checkbox) return;
-    const entries = FOOD_DIETARY_DATA[checkbox.value];
+    const entries = FOOD_DIETARY_DATA[checkbox.value] || FOOD_DIETARY_DATA[FOOD_DIETARY_ALIASES[checkbox.value]];
     if (!entries || !entries.length) return; // rule 9: no entry, no row at all
 
     const body = label.querySelector('.msdd-option-name')?.parentElement;
@@ -4988,21 +5522,195 @@ if (document.readyState === 'loading') {
 
 // ── FOOD PREFERENCE CATEGORY SELECTED ITEMS ──
 // Maps each accordion section-id → array of msdd-ids that belong to it
-const FP_CATEGORY_MAP = {
-  'drinks-section':    ['msdd-drinks'],
-  'nuts-section':      ['msdd-nuts', 'msdd-seeds'],
-  'fruits-section':    ['msdd-fruits'],
-  'veggies-section':   ['msdd-veggies'],
-  'sprouts-section':   ['msdd-sprouts'],
-  'shakes-section':    ['msdd-milkshakes', 'msdd-smoothies'],
-  'porridge-section':  ['msdd-porridge'],
-  'breakfast-section': ['msdd-breakfast'],
-  'chutney-section':   ['msdd-chutney'],
-  'powders-section':   ['msdd-powders'],
-  'nonveg-section':    ['msdd-nonveg'],
-  'rice-section':      ['msdd-rice'],
-  'millets-section':   ['msdd-millets'],
-};
+const FOOD_CATEGORIES = [
+  {
+    "section": "drinks-section",
+    "key": "morning_drinks",
+    "label": "Morning Drinks",
+    "groups": [
+      "msdd-drinks-warm",
+      "msdd-drinks-herbal",
+      "msdd-drinks-infused",
+      "msdd-drinks-honey",
+      "msdd-drinks-tea",
+      "msdd-drinks-milk"
+    ]
+  },
+  {
+    "section": "sprouts-section",
+    "key": "sprouts",
+    "label": "Sprouts",
+    "groups": [
+      "msdd-sprouts"
+    ]
+  },
+  {
+    "section": "milkshakes-section",
+    "key": "milkshakes",
+    "label": "Milkshakes",
+    "groups": [
+      "msdd-milkshakes"
+    ]
+  },
+  {
+    "section": "smoothies-section",
+    "key": "smoothies",
+    "label": "Smoothies",
+    "groups": [
+      "msdd-smoothies"
+    ]
+  },
+  {
+    "section": "porridge-section",
+    "key": "porridge_malt",
+    "label": "Porridge & Malt Drinks",
+    "groups": [
+      "msdd-porridge"
+    ]
+  },
+  {
+    "section": "nuts-indian-section",
+    "key": "nuts_indian",
+    "label": "Nuts (Indian)",
+    "groups": [
+      "msdd-nuts-indian"
+    ]
+  },
+  {
+    "section": "nuts-imported-section",
+    "key": "nuts_imported",
+    "label": "Nuts Imported",
+    "groups": [
+      "msdd-nuts-imported"
+    ]
+  },
+  {
+    "section": "raisins-section",
+    "key": "raisins",
+    "label": "Raisins",
+    "groups": [
+      "msdd-raisins"
+    ]
+  },
+  {
+    "section": "seeds-section",
+    "key": "seeds",
+    "label": "Seeds",
+    "groups": [
+      "msdd-seeds"
+    ]
+  },
+  {
+    "section": "fruits-section",
+    "key": "fruits",
+    "label": "Fruits",
+    "groups": [
+      "msdd-fruits-ic-citrus",
+      "msdd-fruits-ic-tropical",
+      "msdd-fruits-ic-melons",
+      "msdd-fruits-ic-pomes",
+      "msdd-fruits-ic-berries",
+      "msdd-fruits-io-citrus",
+      "msdd-fruits-io-tropical",
+      "msdd-fruits-io-berries",
+      "msdd-fruits-io-stone",
+      "msdd-fruits-im-citrus",
+      "msdd-fruits-im-tropical",
+      "msdd-fruits-im-pomes",
+      "msdd-fruits-im-berries",
+      "msdd-fruits-im-stone"
+    ]
+  },
+  {
+    "section": "breakfast-section",
+    "key": "breakfast",
+    "label": "Breakfast",
+    "groups": [
+      "msdd-breakfast"
+    ]
+  },
+  {
+    "section": "chutney-section",
+    "key": "chutney",
+    "label": "Chutney",
+    "groups": [
+      "msdd-chutney"
+    ]
+  },
+  {
+    "section": "rice-section",
+    "key": "rice_roti",
+    "label": "Rice/Roti",
+    "groups": [
+      "msdd-rice"
+    ]
+  },
+  {
+    "section": "millets-section",
+    "key": "millets",
+    "label": "Millets",
+    "groups": [
+      "msdd-millets"
+    ]
+  },
+  {
+    "section": "dairy-section",
+    "key": "dairy",
+    "label": "Dairy",
+    "groups": [
+      "msdd-dairy"
+    ]
+  },
+  {
+    "section": "leafy-section",
+    "key": "leafy_vegetables",
+    "label": "Leafy vegetables",
+    "groups": [
+      "msdd-leafy"
+    ]
+  },
+  {
+    "section": "veggies-section",
+    "key": "vegetables",
+    "label": "Vegetables",
+    "groups": [
+      "msdd-veggies"
+    ]
+  },
+  {
+    "section": "roots-section",
+    "key": "roots_tubers",
+    "label": "Roots & Tubers",
+    "groups": [
+      "msdd-roots"
+    ]
+  },
+  {
+    "section": "nonveg-section",
+    "key": "non_veg",
+    "label": "Non Veg",
+    "groups": [
+      "msdd-nonveg"
+    ]
+  }
+];
+
+// section-id → array of msdd-ids (used by the "Selected Items" strip)
+const FP_CATEGORY_MAP = {};
+FOOD_CATEGORIES.forEach(c => { FP_CATEGORY_MAP[c.section] = c.groups; });
+// every msdd list on the page (used by clearForm / restore)
+const ALL_MSDD_IDS = FOOD_CATEGORIES.flatMap(c => c.groups);
+
+// Builds { morning_drinks: 'A, B', fruits: '-', ... } from the current selections
+function buildFoodFields() {
+  const out = {};
+  FOOD_CATEGORIES.forEach(c => {
+    const picked = [];
+    c.groups.forEach(gid => (msddState[gid] || []).forEach(v => picked.push(v)));
+    out[c.key] = picked.length ? picked.join(', ') : '-';
+  });
+  return out;
+}
 
 // Reverse map: msdd-id → section-id
 const FP_MSDD_TO_SECTION = {};
@@ -5048,7 +5756,7 @@ window.refreshAllCategorySelectedItems = function() {
 window.toggleAccordion = function(h){
   const body=h.parentElement.querySelector('.accordion-body');
   h.classList.toggle('open'); body.classList.toggle('open');
-  if(body.classList.contains('open')){ const firstSearch=body.querySelector('.msdd-search'); if(firstSearch) setTimeout(()=>firstSearch.focus(),80); }
+  if(body.classList.contains('open')){ const firstSearch=body.querySelector('.msdd-search'); if(firstSearch) void 0; }
 };
 window.toggleChip = el=>el.classList.toggle('active');
 window.ynToggle = (btn,type)=>{ btn.parentElement.querySelectorAll('.yn-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); const d=document.getElementById('drink-opts'); if(d) d.style.display=type==='yes'?'block':'none'; };
@@ -5225,12 +5933,7 @@ function buildFormData() {
           ])
         )
       : null,
-    morning_drinks: fm('msdd-drinks'), nuts: fm('msdd-nuts'), seeds: fm('msdd-seeds'),
-    fruits: fm('msdd-fruits'), vegetables: fm('msdd-veggies'), sprouts: fm('msdd-sprouts'),
-    milkshakes: fm('msdd-milkshakes'), smoothies: fm('msdd-smoothies'),
-    porridge_malt: fm('msdd-porridge'), breakfast: fm('msdd-breakfast'),
-    chutney: fm('msdd-chutney'), powders_ghee: fm('msdd-powders'),
-    non_veg: fm('msdd-nonveg'), rice: fm('msdd-rice'), millets_grains: fm('msdd-millets'),
+    ...buildFoodFields(),
     symptoms: fc('#symptoms-group .chip'), food_dislikes: fv('inp-dislikes'),
     comments: fv('inp-comments'), whatsapp_consent: fb('consent-wa'),
   };
@@ -5574,10 +6277,8 @@ function clearForm() {
   document.querySelectorAll('.chip,.time-chip').forEach(el=>el.classList.remove('active'));
   document.getElementById('eat-window-val').value='';
 
-  const allMsdd = ['msdd-drinks','msdd-nuts','msdd-seeds','msdd-fruits','msdd-veggies',
-    'msdd-sprouts','msdd-milkshakes','msdd-smoothies','msdd-porridge','msdd-breakfast',
-    'msdd-chutney','msdd-powders','msdd-nonveg','msdd-rice','msdd-millets'];
-  allMsdd.forEach(id=>{
+  const allMsdd = ALL_MSDD_IDS;
+  allMsdd.forEach(id=>{ filterMsdd(id,'');
     document.querySelectorAll('#'+id+'-list input[type="checkbox"]').forEach(cb=>cb.checked=false);
     delete msddState[id];
     msddChange(id);
@@ -5659,7 +6360,7 @@ function clearForm() {
 }
 
 // ── EXPOSE GLOBALS ──
-window.toggleAccordion = function(h){ const body=h.parentElement.querySelector('.accordion-body'); h.classList.toggle('open'); body.classList.toggle('open'); if(body.classList.contains('open')){ const firstSearch=body.querySelector('.msdd-search'); if(firstSearch) setTimeout(()=>firstSearch.focus(),80); } };
+window.toggleAccordion = function(h){ const body=h.parentElement.querySelector('.accordion-body'); h.classList.toggle('open'); body.classList.toggle('open'); if(body.classList.contains('open')){ const firstSearch=body.querySelector('.msdd-search'); if(firstSearch) void 0; } };
 window.toggleChip = el=>el.classList.toggle('active');
 window.ynToggle = (btn,type)=>{ btn.parentElement.querySelectorAll('.yn-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); const d=document.getElementById('drink-opts'); if(d) d.style.display=type==='yes'?'block':'none'; };
 window.setPlanFor = function(type) {
@@ -5858,14 +6559,31 @@ function renderSubmittedSummary(data) {
        'weekend_eating_rule','weekend_eating_days','weekend_eating_rule_type','weekend_eating_custom_rule','weekend_eating_repeat_days');
 
   // ── SECTION 5: Food Preferences (MSDD) ──
-  const foodPrefKeys = ['morning_drinks','nuts','seeds','fruits','vegetables','sprouts',
-    'milkshakes','smoothies','porridge_malt','breakfast','chutney','powders_ghee',
-    'non_veg','rice','millets_grains'];
+  const foodPrefKeys = ["morning_drinks", "sprouts", "milkshakes", "smoothies", "porridge_malt", "nuts_indian", "nuts_imported", "raisins", "seeds", "fruits", "breakfast", "chutney", "rice_roti", "millets", "dairy", "leafy_vegetables", "vegetables", "roots_tubers", "non_veg", "nuts", "rice", "millets_grains", "powders_ghee"];
   const foodPrefLabels = {
-    morning_drinks:'Morning Drinks', nuts:'Nuts', seeds:'Seeds', fruits:'Fruits',
-    vegetables:'Vegetables', sprouts:'Sprouts', milkshakes:'Milkshakes', smoothies:'Smoothies',
-    porridge_malt:'Porridge / Malt', breakfast:'Breakfast Items', chutney:'Chutneys',
-    powders_ghee:'Powders / Ghee', non_veg:'Non-Veg', rice:'Rice Dishes', millets_grains:'Millets / Grains'
+    morning_drinks: "Morning Drinks",
+    sprouts: "Sprouts",
+    milkshakes: "Milkshakes",
+    smoothies: "Smoothies",
+    porridge_malt: "Porridge & Malt Drinks",
+    nuts_indian: "Nuts (Indian)",
+    nuts_imported: "Nuts Imported",
+    raisins: "Raisins",
+    seeds: "Seeds",
+    fruits: "Fruits",
+    breakfast: "Breakfast",
+    chutney: "Chutney",
+    rice_roti: "Rice/Roti",
+    millets: "Millets",
+    dairy: "Dairy",
+    leafy_vegetables: "Leafy vegetables",
+    vegetables: "Vegetables",
+    roots_tubers: "Roots & Tubers",
+    non_veg: "Non Veg",
+    nuts: "Nuts (earlier selection)",
+    rice: "Rice (earlier selection)",
+    millets_grains: "Millets / Grains (earlier selection)",
+    powders_ghee: "Powders / Ghee (earlier selection)"
   };
   foodPrefKeys.forEach(k => rendered.add(k));
 
@@ -6066,10 +6784,8 @@ function loadAssessmentIntoForm(data) {
   if (g('conditions-tags')) g('conditions-tags').innerHTML = '';
 
   // Clear MSDD state
-  const allMsddIds = ['msdd-drinks','msdd-nuts','msdd-seeds','msdd-fruits','msdd-veggies',
-    'msdd-sprouts','msdd-milkshakes','msdd-smoothies','msdd-porridge','msdd-breakfast',
-    'msdd-chutney','msdd-powders','msdd-nonveg','msdd-rice','msdd-millets'];
-  allMsddIds.forEach(id => {
+  const allMsddIds = ALL_MSDD_IDS;
+  allMsddIds.forEach(id => { filterMsdd(id,'');
     document.querySelectorAll('#'+id+'-list input[type="checkbox"]').forEach(cb => cb.checked = false);
     delete msddState[id];
     renderMsddTags(id, []);
@@ -6261,37 +6977,17 @@ function loadAssessmentIntoForm(data) {
   }
 
   // ── 14. MSDD FOOD PREFERENCES ─────────────────────────────────────────────
-  const msddFieldMap = {
-    morning_drinks:  'msdd-drinks',
-    nuts:            'msdd-nuts',
-    seeds:           'msdd-seeds',
-    fruits:          'msdd-fruits',
-    vegetables:      'msdd-veggies',
-    sprouts:         'msdd-sprouts',
-    milkshakes:      'msdd-milkshakes',
-    smoothies:       'msdd-smoothies',
-    porridge_malt:   'msdd-porridge',
-    breakfast:       'msdd-breakfast',
-    chutney:         'msdd-chutney',
-    powders_ghee:    'msdd-powders',
-    non_veg:         'msdd-nonveg',
-    rice:            'msdd-rice',
-    millets_grains:  'msdd-millets',
-  };
-  Object.entries(msddFieldMap).forEach(([dataKey, msddId]) => {
-    const raw = data[dataKey];
+  FOOD_CATEGORIES.forEach(cat => {
+    const raw = data[cat.key];
     if (!raw || raw === '-') return;
-    const items = raw.split(', ').map(s => s.trim()).filter(Boolean);
-    items.forEach(item => {
-      // Try exact value match first
-      const cb = document.querySelector('#' + msddId + '-list input[value="' + item.replace(/'/g, "\\'") + '"]');
-      if (cb) { cb.checked = true; return; }
-      // Fallback: loop all checkboxes (handles special chars)
-      document.querySelectorAll('#' + msddId + '-list input[type="checkbox"]').forEach(inp => {
-        if (inp.value === item) inp.checked = true;
+    const wanted = new Set(String(raw).split(',').map(s => s.trim()).filter(Boolean));
+    cat.groups.forEach(gid => {
+      let any = false;
+      document.querySelectorAll('#' + gid + '-list input[type="checkbox"]').forEach(inp => {
+        if (wanted.has(inp.value)) { inp.checked = true; any = true; }
       });
+      if (any) msddChange(gid);          // updates msddState + renders tags
     });
-    msddChange(msddId);       // updates msddState + renders tags
   });
   // Rebuild persistent "Selected Items" areas for every category
   if (typeof window.refreshAllCategorySelectedItems === 'function') {
@@ -6815,13 +7511,7 @@ function saveDraft() {
     curries: g('inp-curries')?.value, diet: g('inp-diet')?.value, eatWindow: g('eat-window-val')?.value,
     dislikes: g('inp-dislikes')?.value, comments: g('inp-comments')?.value, waConsent: g('consent-wa')?.checked,
     mealTypes: activeChips('#meal-types .chip'),
-    drinks: msddState['msdd-drinks']||[], nuts: msddState['msdd-nuts']||[], seeds: msddState['msdd-seeds']||[],
-    fruits: msddState['msdd-fruits']||[], veggies: msddState['msdd-veggies']||[],
-    sprouts: msddState['msdd-sprouts']||[], milkshakes: msddState['msdd-milkshakes']||[],
-    smoothies: msddState['msdd-smoothies']||[], porridge: msddState['msdd-porridge']||[],
-    breakfast: msddState['msdd-breakfast']||[], chutney: msddState['msdd-chutney']||[],
-    powders: msddState['msdd-powders']||[], nonveg: msddState['msdd-nonveg']||[],
-    rice: msddState['msdd-rice']||[], millets: msddState['msdd-millets']||[],
+    msdd: JSON.parse(JSON.stringify(msddState)),
     symptoms: activeChips('#symptoms-group .chip'),
     sectionsOpen: ['health-section','prefs-section','symptoms-section'].filter(id=>{ const el=g(id); return el && el.style.display!=='none' && el.style.display!==''; }),
     drinkYes: document.querySelector('.yn-btn.yes')?.classList.contains('active'),
@@ -6920,18 +7610,15 @@ function restoreDraft() {
   if (waEl) waEl.checked = !!draft.waConsent;
 
   // ── MSDD dropdowns ──
-  const msddMap = {
-    drinks:'msdd-drinks',nuts:'msdd-nuts',seeds:'msdd-seeds',fruits:'msdd-fruits',veggies:'msdd-veggies',
-    sprouts:'msdd-sprouts',milkshakes:'msdd-milkshakes',smoothies:'msdd-smoothies',porridge:'msdd-porridge',
-    breakfast:'msdd-breakfast',chutney:'msdd-chutney',powders:'msdd-powders',nonveg:'msdd-nonveg',
-    rice:'msdd-rice',millets:'msdd-millets'
-  };
-  Object.entries(msddMap).forEach(([k,id])=>{
-    const vals = draft[k];
-    if (!vals || !vals.length) return;
-    vals.forEach(v=>{ const cb=document.querySelector('#'+id+'-list input[value="'+v+'"]'); if(cb) cb.checked=true; });
-    if (typeof msddChange === 'function') msddChange(id);
-  });
+  if (draft.msdd && typeof draft.msdd === 'object') {
+    Object.entries(draft.msdd).forEach(([id, vals]) => {
+      if (!Array.isArray(vals) || !vals.length) return;
+      document.querySelectorAll('#' + id + '-list input[type="checkbox"]').forEach(cb => {
+        if (vals.includes(cb.value)) cb.checked = true;
+      });
+      if (typeof msddChange === 'function') msddChange(id);
+    });
+  }
 
   // ── Health conditions ──
   if (draft.conditions && draft.conditions.length) {
