@@ -2274,6 +2274,83 @@
   }
   .spv-btn-profiles:hover { background: #e5e7eb; transform: translateY(-2px); }
 
+  /* Recommended Lab Tests card (shown on the submitted-plan dashboard) */
+  .spv-labs-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-left: 4px solid var(--teal);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 24px;
+    box-shadow: var(--card-shadow);
+    animation: spvFadeIn 0.4s cubic-bezier(.4,0,.2,1) both;
+  }
+  .spv-labs-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .spv-labs-icon { font-size: 1.6rem; line-height: 1; flex-shrink: 0; }
+  .spv-labs-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .spv-labs-desc {
+    color: var(--muted);
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+  .spv-labs-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 14px 0 16px;
+  }
+  .spv-labs-chip {
+    background: var(--teal-light);
+    color: var(--teal-dark);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1px solid #c8ede9;
+    white-space: nowrap;
+  }
+  .spv-labs-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--border);
+    padding-top: 14px;
+  }
+  .spv-labs-note {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .spv-labs-dismiss {
+    background: none;
+    border: none;
+    color: var(--teal-dark);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 8px 4px;
+    white-space: nowrap;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .spv-labs-dismiss:hover { color: var(--teal); }
+  @media (max-width: 560px) {
+    .spv-labs-footer { flex-direction: column; align-items: flex-start; }
+  }
+
   /* Summary cards container */
   .spv-summary {
     display: grid;
@@ -2691,12 +2768,12 @@
       <h1 class="welcome-title">What is <em>Nutrition</em>?</h1>
       <p class="welcome-desc">Nutrition is the process of consuming the right foods your body needs to stay healthy, grow, and have energy. It includes carbohydrates, proteins, fats, vitamins, minerals, and water — all working together to keep you strong, boost immunity, and prevent disease.</p>
       <div class="welcome-cards">
-        <a href="education.html#carbohydrates" class="welcome-card"><div class="welcome-card-icon">🌾</div><div class="welcome-card-name">Carbohydrates</div><div class="welcome-card-sub">Primary energy source</div></a>
-        <a href="education.html#proteins" class="welcome-card"><div class="welcome-card-icon">🥩</div><div class="welcome-card-name">Proteins</div><div class="welcome-card-sub">Build &amp; repair tissues</div></a>
-        <a href="education.html#fats" class="welcome-card"><div class="welcome-card-icon">🥑</div><div class="welcome-card-name">Fats</div><div class="welcome-card-sub">Stored energy &amp; hormones</div></a>
-        <a href="education.html#vitamins" class="welcome-card"><div class="welcome-card-icon">🍊</div><div class="welcome-card-name">Vitamins</div><div class="welcome-card-sub">Regulate body processes</div></a>
-        <a href="education.html#minerals" class="welcome-card"><div class="welcome-card-icon">⚡</div><div class="welcome-card-name">Minerals</div><div class="welcome-card-sub">Bone &amp; nerve support</div></a>
-        <a href="education.html#water" class="welcome-card"><div class="welcome-card-icon">💧</div><div class="welcome-card-name">Water</div><div class="welcome-card-sub">Hydration &amp; digestion</div></a>
+        <div class="welcome-card"><div class="welcome-card-icon">🌾</div><div class="welcome-card-name">Carbohydrates</div><div class="welcome-card-sub">Primary energy source</div></div>
+        <div class="welcome-card"><div class="welcome-card-icon">🥩</div><div class="welcome-card-name">Proteins</div><div class="welcome-card-sub">Build &amp; repair tissues</div></div>
+        <div class="welcome-card"><div class="welcome-card-icon">🥑</div><div class="welcome-card-name">Fats</div><div class="welcome-card-sub">Stored energy &amp; hormones</div></div>
+        <div class="welcome-card"><div class="welcome-card-icon">🍊</div><div class="welcome-card-name">Vitamins</div><div class="welcome-card-sub">Regulate body processes</div></div>
+        <div class="welcome-card"><div class="welcome-card-icon">⚡</div><div class="welcome-card-name">Minerals</div><div class="welcome-card-sub">Bone &amp; nerve support</div></div>
+        <div class="welcome-card"><div class="welcome-card-icon">💧</div><div class="welcome-card-name">Water</div><div class="welcome-card-sub">Hydration &amp; digestion</div></div>
       </div>
     </div>
   </div>
@@ -2859,6 +2936,33 @@
           <button class="spv-btn-edit" onclick="spvEditProfile()">✏️ Edit Profile</button>
           <button class="spv-btn-profiles" onclick="window.location.href='profile.html'">📋 View All Profiles</button>
         </div>
+        <!-- Recommended Lab Tests -->
+        <div class="spv-labs-card" id="spv-labs-card">
+          <div class="spv-labs-head">
+            <span class="spv-labs-icon">🩺</span>
+            <div>
+              <div class="spv-labs-title">Get these tests done for a more accurate plan</div>
+              <div class="spv-labs-desc">Based on your assessment, sharing recent lab results helps our nutrition team fine-tune your plan around your actual numbers — not just what you've told us.</div>
+            </div>
+          </div>
+          <div class="spv-labs-chips">
+            <span class="spv-labs-chip">Blood Pressure</span>
+            <span class="spv-labs-chip">Complete Blood Count</span>
+            <span class="spv-labs-chip">Fasting Blood Glucose</span>
+            <span class="spv-labs-chip">Lipid Profile</span>
+            <span class="spv-labs-chip">TSH + Free T4</span>
+            <span class="spv-labs-chip">Vitamin B12</span>
+            <span class="spv-labs-chip">Vitamin D</span>
+            <span class="spv-labs-chip">Calcium</span>
+            <span class="spv-labs-chip">Iron</span>
+            <span class="spv-labs-chip">Folate</span>
+          </div>
+          <div class="spv-labs-footer">
+            <span class="spv-labs-note">You can share your report via WhatsApp or email when our team reaches out — no need to wait.</span>
+            <button class="spv-labs-dismiss" onclick="spvDismissLabsCard()">Got it, dismiss</button>
+          </div>
+        </div>
+
         <!-- Summary -->
         <div class="spv-summary" id="spv-summary-container">
           <!-- Rendered dynamically by renderSubmittedSummary() -->
@@ -4299,6 +4403,30 @@
       <div class="consent-box" onclick="document.getElementById('consent-wa').click(); event.stopPropagation();">
         <input type="checkbox" id="consent-wa" onclick="event.stopPropagation()"/>
         <label for="consent-wa">I agree to be contacted via <span class="whatsapp-icon">WhatsApp</span> for my personalized diet plan and follow-up guidance. <strong>We will only reach out regarding your nutrition plan and will never send spam or share your details.</strong></label>
+      </div>
+      <div class="spv-labs-card" id="spv-labs-card-presubmit" style="margin-bottom:16px;">
+        <div class="spv-labs-head">
+          <span class="spv-labs-icon">🩺</span>
+          <div>
+            <div class="spv-labs-title">Recommended lab tests</div>
+            <div class="spv-labs-desc">Go ahead and submit your plan request now — you don't need to wait for these. Whenever it's convenient, get these tests done and share the report with our team so they can fine-tune your plan around your actual numbers.</div>
+          </div>
+        </div>
+        <div class="spv-labs-chips">
+          <span class="spv-labs-chip">Blood Pressure</span>
+          <span class="spv-labs-chip">Complete Blood Count</span>
+          <span class="spv-labs-chip">Fasting Blood Glucose</span>
+          <span class="spv-labs-chip">Lipid Profile</span>
+          <span class="spv-labs-chip">TSH + Free T4</span>
+          <span class="spv-labs-chip">Vitamin B12</span>
+          <span class="spv-labs-chip">Vitamin D</span>
+          <span class="spv-labs-chip">Calcium</span>
+          <span class="spv-labs-chip">Iron</span>
+          <span class="spv-labs-chip">Folate</span>
+        </div>
+        <div class="spv-labs-footer">
+          <span class="spv-labs-note">Share your report via WhatsApp or email whenever it's ready — before or after our team reaches out.</span>
+        </div>
       </div>
       <div class="submit-row" id="submit-row-normal">
         <button id="submitBtn" class="btn-primary" onclick="submitForm()" style="flex:2;">Submit My Plan Request</button>
@@ -6405,6 +6533,28 @@ let _lastSubmittedProfileId = null;
 
 // ── Show the submitted plan dashboard ──
 // Fetches the just-saved document from Firebase for the authoritative summary.
+// ── Recommended Lab Tests card(s): dismiss + persist per-device ──
+const LABS_CARD_DISMISS_KEY = 'nutriplan_labs_card_dismissed'; // post-submit card (default)
+function spvDismissLabsCard(cardId, storageKey) {
+  cardId = cardId || 'spv-labs-card';
+  storageKey = storageKey || LABS_CARD_DISMISS_KEY;
+  const card = document.getElementById(cardId);
+  if (card) card.style.display = 'none';
+  try { localStorage.setItem(storageKey, '1'); } catch(e) {}
+}
+function spvInitLabsCard(cardId, storageKey) {
+  cardId = cardId || 'spv-labs-card';
+  storageKey = storageKey || LABS_CARD_DISMISS_KEY;
+  const card = document.getElementById(cardId);
+  if (!card) return;
+  let dismissed = false;
+  try { dismissed = localStorage.getItem(storageKey) === '1'; } catch(e) {}
+  card.style.display = dismissed ? 'none' : '';
+}
+window.spvDismissLabsCard = spvDismissLabsCard;
+
+// Note: the pre-submit labs card is always visible (no dismiss) — nothing to init here.
+
 async function showSubmittedPlanView(formData, isEdit) {
   // Never show the submitted view if the user explicitly went back to the blank form
   if (typeof isBackMode === 'function' && isBackMode()) return;
@@ -6435,6 +6585,7 @@ async function showSubmittedPlanView(formData, isEdit) {
 
   setTimeout(async () => {
     spv.classList.add('show');
+    spvInitLabsCard();
 
     // Show loading indicator while fetching from Firebase
     const container = document.getElementById('spv-summary-container');
@@ -7322,6 +7473,7 @@ window.cancelEditMode = function() {
     setTimeout(() => {
       if (!isBackMode()) {
         spv.classList.add('show');
+        spvInitLabsCard();
         if (saved) renderSubmittedSummary(saved);
       }
       const wbody = document.getElementById('wizard-body');
