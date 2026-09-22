@@ -2009,6 +2009,74 @@ function renderDetail(panel, d, relInfo, uid) {
       .metric-band.cols-3 { grid-template-columns: repeat(2,1fr); }
       .fa-key { min-width: 130px; }
     }
+
+    /* ── CARD DEFINITION TOOLTIPS ── hover any Generated Results card to see what it means */
+    .fa-mc[data-tip], .calorie-hero[data-tip], .goal-banner[data-tip] {
+      position: relative;
+      cursor: help;
+    }
+    .fa-mc[data-tip]::after,
+    .calorie-hero[data-tip]::after,
+    .goal-banner[data-tip]::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 11px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      width: max-content;
+      max-width: 220px;
+      background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.55;
+      text-align: left;
+      white-space: normal;
+      padding: 10px 13px;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(20,120,108,0.28);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .18s ease, visibility .18s ease, transform .18s ease;
+      pointer-events: none;
+      z-index: 300;
+    }
+    .fa-mc[data-tip]::before,
+    .calorie-hero[data-tip]::before,
+    .goal-banner[data-tip]::before {
+      content: '';
+      position: absolute;
+      bottom: calc(100% + 5px);
+      left: 50%;
+      transform: translateX(-50%) translateY(-2px);
+      border: 6px solid transparent;
+      border-top-color: var(--teal-dark);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .18s ease, visibility .18s ease;
+      z-index: 300;
+    }
+    .fa-mc[data-tip]:hover::after,
+    .calorie-hero[data-tip]:hover::after,
+    .goal-banner[data-tip]:hover::after {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+    .fa-mc[data-tip]:hover::before,
+    .calorie-hero[data-tip]:hover::before,
+    .goal-banner[data-tip]:hover::before {
+      opacity: 1;
+      visibility: visible;
+    }
+    /* keep first/last-card tooltips from clipping off the grid edge */
+    .metric-band.cols-3 .fa-mc:first-child[data-tip]::after { left: 0; transform: translateX(0) translateY(4px); }
+    .metric-band.cols-3 .fa-mc:first-child[data-tip]::before { left: 20px; transform: translateX(0) translateY(-2px); }
+    .metric-band.cols-3 .fa-mc:last-child[data-tip]::after { left: auto; right: 0; transform: translateX(0) translateY(4px); }
+    .metric-band.cols-3 .fa-mc:last-child[data-tip]::before { left: auto; right: 20px; transform: translateX(0) translateY(-2px); }
+    .metric-band.cols-3 .fa-mc:first-child[data-tip]:hover::after,
+    .metric-band.cols-3 .fa-mc:last-child[data-tip]:hover::after { transform: translateX(0) translateY(0); }
   </style>
 
   <!-- ═══ PROFILE HEADER ═══ -->
@@ -2216,17 +2284,17 @@ function renderDetail(panel, d, relInfo, uid) {
       return `
     <!-- Row 1: BMI | Present Weight | Ideal Weight -->
     <div class="metric-band cols-3" style="margin-bottom:14px;">
-      <div class="fa-mc" style="border-left:3px solid var(--teal);">
+      <div class="fa-mc" style="border-left:3px solid var(--teal);" data-tip="Body Mass Index (BMI): weight relative to height, used to place you in a category — underweight, normal, overweight, or obese.">
         <div class="fa-mc-lbl">Body Mass Index</div>
         <div class="fa-mc-val" style="color:var(--teal);">${np(d.bmi)||'—'}</div>
         <div class="fa-mc-sub">${np(d.bmi_category)||'—'}</div>
       </div>
-      <div class="fa-mc">
+      <div class="fa-mc" data-tip="Your current body weight, as entered in this profile.">
         <div class="fa-mc-lbl">Present Weight</div>
         <div class="fa-mc-val" style="color:var(--teal);">${np(wt) ? wt+' kg' : '—'}</div>
         <div class="fa-mc-sub">Current body weight</div>
       </div>
-      <div class="fa-mc">
+      <div class="fa-mc" data-tip="An estimated healthy weight for your height, based on standard BMI ranges — the target to work toward.">
         <div class="fa-mc-lbl">Ideal Weight</div>
         <div class="fa-mc-val" style="color:#60d394;">${np(idealW) ? idealW+' kg' : '—'}</div>
         <div class="fa-mc-sub">Goal to reach</div>
@@ -2236,12 +2304,12 @@ function renderDetail(panel, d, relInfo, uid) {
 
     <!-- Row 2: To Lose/Gain | Body Fat % -->
     <div class="metric-band cols-2" style="margin-bottom:14px;">
-      <div class="fa-mc">
+      <div class="fa-mc" data-tip="The difference between present weight and ideal weight — how much to lose or gain to reach your goal.">
         <div class="fa-mc-lbl">${wdirLabel}</div>
         <div class="fa-mc-val" style="color:${wdir==='loss'?'#f59e0b':wdir==='gain'?'#10b981':'var(--muted)'};">${np(wchg) && wchg !== '-' ? wchg+' kg' : (wdir === 'maintain' ? 'Maintain' : '—')}</div>
         <div class="fa-mc-sub">${wdirSub}</div>
       </div>
-      <div class="fa-mc">
+      <div class="fa-mc" data-tip="Estimated percentage of body weight that is fat, calculated from waist and neck measurements (and hip, for women).">
         <div class="fa-mc-lbl">Body Fat %</div>
         <div class="fa-mc-val" style="color:#6366f1;">${np(d.body_fat) && d.body_fat !== '-' ? d.body_fat+'%' : '—'}</div>
         <div class="fa-mc-sub">${np(d.body_fat_category) ? d.body_fat_category : 'Enter waist & neck to calculate'}</div>
@@ -2249,7 +2317,7 @@ function renderDetail(panel, d, relInfo, uid) {
     </div>
 
     <!-- Your Goal Weekly Rate (Editable via Modal) -->
-    <div class="goal-banner" id="weekly-rate-banner-${uid}" style="position:relative;">
+    <div class="goal-banner" id="weekly-rate-banner-${uid}" style="position:relative;" data-tip="How fast you're aiming to lose or gain weight each week. This pace drives your daily calorie target below.">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
         <div style="flex:1;min-width:0;">
           <div class="gb-title">⚡ Weekly Goal Rate</div>
@@ -2263,7 +2331,7 @@ function renderDetail(panel, d, relInfo, uid) {
     </div>
 
     <!-- Calorie Hero -->
-    <div class="calorie-hero" id="calorie-hero-${uid}">
+    <div class="calorie-hero" id="calorie-hero-${uid}" data-tip="The number of calories to eat per day, on average, to hit your weekly goal rate — based on your BMR, activity level, and goal.">
       <div class="ch-lbl">⭐ Daily Calorie Target</div>
       <div class="ch-val" id="calorie-hero-val-${uid}">${np(dcal) && dcal !== '-' ? dcal : '—'}</div>
       <div class="ch-sub">kcal / day</div>
@@ -2272,7 +2340,7 @@ function renderDetail(panel, d, relInfo, uid) {
     <!-- Calorie Breakdown -->
  
     <div class="metric-band cols-2">
-      <div class="fa-mc" style="border-left:3px solid #f59e0b;" id="timeline-card-${uid}">
+      <div class="fa-mc" style="border-left:3px solid #f59e0b;" id="timeline-card-${uid}" data-tip="Estimated days to reach your ideal weight, based on the weight to lose/gain and your current weekly goal rate.">
         <div class="fa-mc-lbl">Timeline to Goal</div>
         ${(() => {
           const tdays = np(d.timeline_days) && d.timeline_days !== '-' ? parseInt(d.timeline_days) : null;
@@ -2282,7 +2350,7 @@ function renderDetail(panel, d, relInfo, uid) {
           return `<div class="fa-mc-val" style="color:#f59e0b;font-size:1.2rem;" id="timeline-days-val-${uid}">${tdays} days</div><div class="fa-mc-sub" id="timeline-sub-val-${uid}">${weeks} weeks &nbsp;·&nbsp; ${months} months</div>`;
         })()}
       </div>
-      <div class="fa-mc" style="border-left:3px solid #a78bfa;">
+      <div class="fa-mc" style="border-left:3px solid #a78bfa;" data-tip="The daily calories needed to maintain (not lose or gain) your weight once you reach your ideal weight, at your current activity level.">
         <div class="fa-mc-lbl">After-Goal Calories</div>
         <div class="fa-mc-val" style="color:#a78bfa;" id="after-goal-cal-val-${uid}">${(() => {
           // Compute directly: afterBMR (at ideal weight) × present activity factor
